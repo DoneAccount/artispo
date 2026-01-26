@@ -1,0 +1,44 @@
+/* Styles for errors */
+.error-box {
+  position: relative;
+  z-index: 10;
+  display: block;
+  width: 40%;
+  max-width: 500px;
+  background-color: #ffe1cc;
+  border: 2px solid #e86c0c;
+  color: #1b1b1b;
+  padding: 10px 15px;
+  border-radius: 12px;
+  margin: auto auto 1rem auto;
+  font-size: 0.85rem;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.error-text {
+  font-size: 0.75rem;
+  color: #a53b00;
+  background-color: #ffe1cc;
+  padding: 6px 10px;
+  border-left: 4px solid #e86c0c;
+  border-radius: 6px;
+  margin: -0.3rem 0 0.7rem;
+  font-weight: 500;
+}
+
+/*
+Unused, but may be used again in the future.
+
+.input-error {
+  border: 2px solid #e86c0c !important;
+  background-color: #ffe1cc !important;
+}
+
+.checkbox-error {
+  font-size: 0.75rem;
+  color: #a53b00;
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+*/

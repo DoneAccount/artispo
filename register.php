@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $terms = $_POST["terms"];
 
     $errors_caught = [
-        "name" => validate_name($name),
+        "name" => validate_name($username),
         "email" => validate_email($email),
         "password_length" => validate_password_length($password),
         "password_digit" => validate_password_digit($password),
@@ -68,6 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "age" => validate_age($age),
         "terms" => validate_terms($terms)
     ];
+}
+
+foreach ($errors_caught as $error_type => $error_happened) {
+    if ($error_happened) {
+        include_once "./includes/php/display-error.php";
+    }
 }
 
 ?>
