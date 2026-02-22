@@ -1,0 +1,398 @@
+/* ---------- General Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Georgia", serif;
+}
+body {
+  background-color: #35363F;
+  display: flex;
+  flex-direction: column; /* stack children vertically */
+  min-height: 100vh; /* make body take full viewport height */
+}
+
+
+/* ---------- Top Navigation ---------- */
+.top-nav {
+  position: relative;
+  top: 0px; /* raised just a hair more */
+  left: 0;
+  width: 100%;
+  background-color: #f6e7d0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8em 4em;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.nav-content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-left: auto;
+  padding-left: 0; /* no extra space needed because logo is in normal flow */
+}
+
+
+.logo {
+  position: relative;
+  top: -100px;
+  left: -550px;
+  z-index: 2000;
+  margin: 0;
+  padding: 0;
+}
+
+.logo img {
+  width: 300px;
+  height: auto;
+  display: block;
+}
+
+
+
+.logo h1 {
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.top-nav nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  padding-top: 40px;
+}
+
+.top-nav nav ul li a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.top-nav nav ul li a.active,
+.top-nav nav ul li a:hover {
+  text-decoration: underline;
+}
+
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: absolute;  /* stays in layout */
+  top: 0;
+  left: 0;
+  width: 60px;
+  background-color: #e27b2d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 270px;  /* space above icons */
+  padding-bottom: 100px; /* space below icons — increase as needed */
+  gap: 20px;
+  min-height: 100%;    /* grows with content */
+  z-index: 1;
+}
+
+
+
+
+.sidebar .icon img {
+  width: 35px;     /* adjust icon size */
+  height: 35px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.sidebar .icon img:hover {
+  transform: scale(1.1); /* small zoom on hover */
+}
+/* ---------- Main ---------- */
+
+/* ---------- Profile Content ---------- */
+/* ---------- Profile Content ---------- */
+.profile-content {
+  margin-left: 90px; /* align with sidebar */
+  margin-top: 0px; /* more space below nav/logo */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.profile-card {
+  background-color: #35363F;
+  padding: 60px 50px; /* space inside card */
+  border-radius: 0px;
+  text-align: center;
+  position: relative;
+  width: 1300px; /* wider than before */
+}
+
+
+.profile-card .notification {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 26px; /* bigger bell */
+  cursor: pointer;
+  color: #f6e7d0; 
+  transition: transform 0.3s, color 0.3s;
+}
+
+.profile-card .notification:hover {
+  color: #ffb347;
+  transform: scale(1.2);
+}
+
+/* Profile image container */
+.profile-card .profile-img {
+  width: 180px; /* bigger profile image */
+  height: 180px;
+  border-radius: 50%;
+  margin: 0 auto 20px auto;
+  overflow: hidden;
+  background-color: #35363F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #f6e7d0;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.profile-card .profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card .profile-img:hover {
+  transform: scale(1.05);
+  border-color: #ffb347;
+}
+
+.profile-card .profile-img i {
+  font-size: 110px; /* bigger fallback icon */
+  color: #f6e7d0;
+}
+
+/* Text */
+.profile-card h2 {
+  margin-bottom: 15px;
+  font-size: 2rem; /* bigger name */
+  color: #f6e7d0;
+}
+
+.profile-card p {
+  margin-bottom: 25px;
+  font-size: 1.2rem; /* bigger description */
+  color: #f6e7d0;
+}
+
+.profile-links {
+  display: flex;
+  justify-content: space-between; /* spreads items across the whole width */
+  align-items: center;
+  margin-bottom: 25px;
+  width: 100%; /* span entire card width */
+  padding: 0 10px; /* optional, adds a little space from edges */
+   margin-left: -18px;
+}
+
+.profile-links span {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #f6e7d0;
+  transition: color 0.3s;
+}
+
+
+.profile-links span:hover {
+  color: #ffb347;
+}
+
+/* Add post button */
+.add-post {
+  background: none;
+  border: 2px solid #f6e7d0;
+  border-radius: 5px;
+  color: #f6e7d0;
+  padding: 10px 20px; /* bigger button */
+  cursor: pointer;
+  font-size: 22px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-post:hover {
+  background-color: #ffb347;
+  transform: scale(1.1);
+}
+
+
+/* ---------- Search Bar ---------- */
+.floral-header {
+  width: 100%;
+  background: url("flowers-bg.png") center/cover no-repeat;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 60px; /* reduced from 120px */
+  margin-bottom: 0;
+}
+.floral-content {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background-image: url('flowers_cream_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.floral-search {
+  display: flex;
+  align-items: center;
+  background-color: #f5e9d3;
+  border-radius: 25px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  width: 500px;
+  max-width: 90%;
+  border: 3px solid #e27b2d;
+  margin: 15px 0;
+}
+
+.floral-search .search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.floral-search input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+}
+.footer {
+  background-color: #35363F;
+  color: #f5e9d3;
+  padding: 20px 80px;
+  font-family: "Poppins", sans-serif;
+  width: 100%; /* ensure it spans full width */
+  border-top: 2px solid #ff6b00;
+  margin-top: auto; 
+}
+
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 220px;
+}
+
+.footer-section h3 {
+  color: #ff6b00;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.about .logo-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.footer-logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  margin-top: 0; /* remove the huge margin */
+  display: block;
+}
+
+.tagline {
+  font-size: 0.9rem;
+  color: #f5e9d3;
+}
+
+.footer-section p {
+  color: #f5e9d3;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.footer .logo-area .logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  margin-top: 170px; /* moves the logo down */
+  display: block;
+}
+
+
+.social-icons {
+  margin-top: 15px;
+}
+
+.social-icons img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 8px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section a {
+  text-decoration: none;
+  color: #f5e9d3;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: #ff6b00;
+}
+
+.sub-links {
+  margin-left: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+}

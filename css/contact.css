@@ -1,0 +1,406 @@
+/* =============== FONTS & GENERAL RESET =============== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poly', serif;
+  background-color: #f6e5cc;
+  color: #000;
+  overflow-x: hidden;
+}
+
+.body a{
+  color: #f6e5cc;
+}
+
+h1{
+  font-family: "Sniglet", cursive;
+  font-weight: 100;
+  font-size: 46px;
+  letter-spacing: 0.02em;
+  color: #1B1B1B;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* =============== NAVBAR =============== */
+.navbar {
+  background-color: #f6e5cc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 5%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 55px;
+  height: auto;
+}
+
+.logo-text {
+  font-family: 'Sniglet', cursive;
+  font-size: 2rem;
+  color: #000;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-family: 'Poly', serif;
+  text-decoration: none;
+  color: #000;
+  font-size: 1.1rem;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* =============== CONTACT SECTION =============== */
+.contact-divider {
+  position: relative;
+  background-color: #33333d;
+  color: #f6e5cc;
+  padding: 2rem 8%;
+  text-align: left;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.contact-title {
+  font-family: 'Poly', serif;
+  font-weight: 100;
+  font-size: 3.8rem;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.artispo-block {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.1rem;
+  top: -2px;
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+.artispo-badge {
+  width: 60px;
+  height: auto;
+  margin-bottom: 0.1rem;
+}
+
+.artispo-text {
+  font-family: 'Sniglet', cursive;
+  font-size: 2.2rem;
+  color: #f6e5cc;
+  margin-top: -60px;
+  margin-left: 69px;
+}
+
+.artispo-tagline {
+  font-size: 0.85rem;
+  color: #f6e5cc;
+  opacity: 0.9;
+  margin-left: 70px;
+  margin-top: -3px;
+}
+
+.contact-lines {
+  font-size: 0.95rem; /* smaller font size */
+  margin-top: 0.5rem; /* less top margin */
+  line-height: 1.4; /* tighter line height */
+  max-width: 400px; /* restrict max width */
+}
+
+.social-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 2rem; /* vertical gap 0.5rem, horizontal gap 1.5rem */
+  max-width: 400px; /* or any suitable max width */
+  justify-content: flex-start;
+  margin-top: 4.5px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 45%; /* Two per row */
+}
+
+.social-item img {
+  width: 24px;
+  height: 24px;
+}
+
+.social-item div {
+  font-size: 1rem;
+  color: #f6e5cc;
+}
+
+@media (max-width: 768px) {
+  .social-block {
+    grid-template-columns: 1fr;
+  }
+ .artispo-text {
+    margin-top: -60px;
+    margin-left: 80px;
+  }
+
+  .artispo-tagline {
+    margin-left: 80px;
+  }
+}
+
+.footer-col.contact-col{
+  top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-col.footer-artispo{
+  top: -95px;
+}
+.footer-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.footer-icon:hover {
+  transform: scale(1.1);
+}
+
+.social-item img {
+  width: 30px;
+  height: 30px;
+}
+
+.contact-bg-photo {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: -73px;
+  height: 300px;
+  width: 500px;
+  object-fit: cover;
+  z-index: 3;
+}
+
+/* Decorative shapes */
+.contact-ellipse {
+  position: absolute;
+  top: 3.5%;
+  right: -2%;
+  background-color: #d45d0b;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.contact-rect-top {
+  position: absolute;
+  top: 8%;
+  right: -2px;
+  background-color: #31522b;
+  width: 250px;
+  height: 12px;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.contact-rect-bottom {
+  position: absolute;
+  top: 13%;
+  right: -2px;
+  background-color: #31522b;
+  width: 215px;
+  height: 12px;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+/* ================= LIGHT CREAM CLICKIES (BODY + FOOTER ONLY) ================= */
+
+/* Body links (like contact or socials in content) */
+.contact-divider a,
+.social-item a {
+  color: #f6e5cc; /* light cream default */
+  transition: color 0.3s ease;
+}
+
+.contact-divider a:hover,
+.social-item a:hover {
+  color: #ff8b3d; /* orange on hover */
+}
+
+/* Footer links */
+.footer-list a,
+.footer-text a {
+  color: #f6e5cc; /* light cream */
+  transition: color 0.3s ease;
+}
+
+.footer-list a:hover,
+.footer-text a:hover {
+  color: #ff8b3d; /* orange on hover */
+}
+
+/* Footer social icons */
+.social-icons a img {
+  filter: brightness(95%);
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover img {
+  transform: scale(1.1);
+  filter: brightness(105%) sepia(50%) saturate(200%) hue-rotate(-10deg);
+}
+
+/* =============== PHOTO DIVIDER =============== */
+.photo-divider {
+  background-image: url('flowers_cream_bg-removebg-preview.png');
+  background-size: cover;
+  background-position: center;
+  height: 220px;
+  width: 100%;
+}
+
+/* =============== FOOTER SECTION =============== */
+.footer-divider {
+  background-color: #33333d;
+  color: #f6e5cc;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 2rem;
+  padding: 4rem 10%;
+}
+
+.footer-logo-main {
+  width: 45px;
+  height: auto;
+}
+
+.footer-artispo-name {
+  font-family: 'Sniglet', cursive;
+  font-size: 1.8rem;
+}
+
+.footer-artispo-tagline {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-about-description {
+  margin-top: 0.8rem;
+  line-height: 1.6;
+}
+
+.footer-heading {
+  font-family: 'Poly', serif;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-list li {
+  margin-bottom: 0.4rem;
+}
+
+.footer-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+
+
+/* =============== RESPONSIVENESS =============== */
+@media (max-width: 1024px) {
+  .footer-divider {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .contact-title {
+    font-size: 3.5rem;
+  }
+
+  .footer-divider {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .social-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-divider {
+    padding: 3rem 6%;
+  }
+
+  .contact-title {
+    font-size: 2.8rem;
+  }
+
+  .social-item img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .artispo-badge {
+    width: 50px;
+  }
+
+  .footer-divider {
+    padding: 2rem 6%;
+  }
+}

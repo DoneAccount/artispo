@@ -1,0 +1,760 @@
+/* =========================================================
+   GENERAL
+========================================================= */
+body {
+  margin: 0;
+  background-color: #FAEAD3;
+  font-family: 'Poly', serif;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+header {
+  width: 100%;
+  height: 160px;
+  background-color: #FAEAD3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 120px;
+  box-sizing: border-box;
+  border-bottom: 2px solid #343640; /* optional thin border */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.logo {
+  width: 107px;
+  height: 107px;
+  object-fit: contain;
+}
+
+.logo-icon {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-family: 'Sniglet', cursive;
+  font-weight: 400;
+  font-size: 64px;
+  color: #000000;
+  line-height: 1;
+  margin-top: 10px;
+}
+
+/* NAVIGATION */
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 90px;
+  margin-left: auto;
+}
+
+.nav-item {
+  font-family: 'Poly', serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.03em;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav a{
+  gap: 10px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  text-decoration: underline;
+}
+
+/* NAVBAR CONTAINER */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fdeedc; /* same as your screenshot */
+  padding: 12px 80px; /* space from edges */
+}
+
+/* LOGO AND TEXT */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between logo and text */
+}
+
+/* NAVIGATION LINKS */
+nav {
+  display: flex;
+  gap: 60px; /* adjust this value to control link spacing */
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #000;
+  font-family: 'Poly', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* ACTIVE LINK (underline) */
+.nav-item.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* =========================================================
+   ABOUT SECTION
+========================================================= */
+.about-section {
+  width: 100%;
+  min-height: 700px;
+  background-color: #343640;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.about-content {
+  max-width: 900px;
+  margin-left: 81px;
+  z-index: 5;
+}
+
+.about-content h1 {
+  font-family: 'Poly', serif;
+  font-weight: 400;
+  font-size: 85px;
+  color: #FAEAD3;
+  margin-bottom: 20px;
+}
+
+.about-content p {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 43px;
+  color: #FAEAD3;
+  text-align: left;
+  margin-right: 250px;
+}
+
+/* =========================================================
+   DECORATIVE IMAGES
+========================================================= */
+.image-1, .image-2, .image-3, .flower-image {
+  position: absolute;
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+.image-1 img, .image-2 img, .image-3 img, .flower-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Flower bunch on top */
+.flower-image {
+  width: 300px;
+  height: auto;
+  top: -56px;
+  right: -65px;
+  z-index: 10;
+}
+
+/* Top baroque painting */
+.image-1 {
+  width: 210px;
+  height: 235px;
+  top: 120px;
+  right: 200px;
+  z-index: 8;
+}
+
+/* Middle floral painting */
+.image-3 {
+  width: 360px;
+  height: 460px;
+  top: 210px;
+  right: -210px;
+  z-index: 7;
+  clip-path: inset(0 0 10px 0);
+}
+
+/* Bottom forest painting */
+.image-2 {
+  width: 270px;
+  height: 323px;
+  bottom: 0;
+  right: 175px;
+  z-index: 6;
+  clip-path: inset(0 0 20px 0);
+}
+
+/* =========================================================
+   ORIGIN & PURPOSE DIVIDERS
+========================================================= */
+.origin-purpose-dividers {
+  position: relative;
+  width: 100%;
+  height: 1000px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Row */
+.divider.left-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 254px;
+  background: url('flowers_cream_bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.divider.right-1 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 254px;
+  background-color: #FAEAD3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.divider.right-1 h2 {
+  font-family: 'Poly', serif;
+  font-weight: 400;
+  font-size: 72px;
+  color: #343640;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* Bottom Row */
+.divider.left-2 {
+  position: absolute;
+  top: 254px;
+  left: 0;
+  width: 50%;
+  height: 744px;
+  background: url('forest_painting.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.divider.left-2::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(36,36,36,0.45);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.divider.right-2 {
+  position: absolute;
+  top: 254px;
+  left: 50%;
+  width: 50%;
+  height: 744px;
+  background-color: #343640;
+  color: #FAEAD3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+  box-sizing: border-box;
+}
+
+.divider.right-2 .text-box {
+  max-width: 600px;
+}
+
+/* =========================================================
+   OUR VISION SECTION
+========================================================= */
+.vision-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Top Row */
+.top-row .vision-left {
+  background-color: #FAEAD3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-row .vision-left h2 {
+  font-family: 'Poly', serif;
+  font-weight: 400;
+  font-size: 85px;
+  color: #343640;
+  margin: 0;
+}
+
+.top-row .vision-right {
+  background: url('flowers_cream_bg.jpg') no-repeat center center;
+  background-size: cover;
+  height: 254px;
+}
+
+/* Bottom Row */
+.bottom-row {
+  display: flex;
+  width: 100%;
+}
+
+.bottom-row .vision-left {
+  background-color: #343640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  height: 769px;
+}
+
+.vision-text {
+  max-width: 600px;
+  color: #FAEAD3;
+}
+
+.vision-text h3 {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+.vision-text p {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: #FAEAD3;
+}
+
+.bottom-row .vision-right {
+  background: url('birds.jpg') no-repeat center center;
+  background-size: cover;
+  filter: brightness(36%);
+}
+
+/* =========================================================
+   OUR MISSION DIVIDERS
+========================================================= */
+.our-mission-dividers {
+  position: relative;
+  width: 100%;
+  height: 1023px;
+}
+
+/* Top Row */
+.divider.left-5 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 735px;
+  height: 254px;
+  background: url('flowers_cream_bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.divider.right-5 {
+  position: absolute;
+  top: 0;
+  left: 735px;
+  width: calc(100% - 735px);
+  height: 254px;
+  background-color: #FAEAD3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.divider.right-5 h2 {
+  font-family: 'Poly', serif;
+  font-size: 75px;
+  font-weight: 400;
+  color: #343640;
+  line-height: 80px;
+  margin: 0;
+}
+
+/* Bottom Row */
+.divider.left-6 {
+  position: absolute;
+  top: 254px;
+  left: 0;
+  width: 735px;
+  height: 769px;
+  background: url('flowers_black_bg.jpg') no-repeat center center;
+  background-size: cover;
+  filter: brightness(36%);
+}
+
+.divider.right-6 {
+  position: absolute;
+  top: 254px;
+  left: 735px;
+  width: calc(100% - 735px);
+  height: 769px;
+  background-color: #343640;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 80px;
+  box-sizing: border-box;
+}
+
+.divider.right-6 h3 {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #FAEAD3;
+  margin-bottom: 30px;
+}
+
+.divider.right-6 p {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: #FAEAD3;
+  max-width: 647px;
+}
+
+/* =========================================================
+   FINAL DIVIDERS & FOOTER
+========================================================= */
+.final-background-divider {
+  position: relative;
+  width: 100%;
+  height: 254px;
+  background: url('flowers_cream_bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.final-divider {
+  width: 100%;
+  background-color: #343640;
+  padding: 60px 80px;
+  color: #FAEAD3;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* FOOTER */
+.footer {
+  background-color: #2E2F39;
+  color: #FAEAD3;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 80px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 220px;
+}
+
+.footer-column h3 {
+  color: #FF8031;
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  color: #FAEAD3;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+.footer-column ul li a:hover {
+  color: #FF8031;
+}
+
+.footer-column ul .sub-links {
+  list-style-type: disc;
+  padding-left: 25px;
+  margin-top: 5px;
+}
+
+.footer-column ul .sub-links li {
+  margin-bottom: 5px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.footer-logo {
+  width: 65px;
+  height: 65px;
+  margin-right: 10px;
+}
+
+.brand-info h2 {
+  font-family: 'Sniglet', cursive;
+  font-size: 36px;
+  color: #FAEAD3;
+  margin: 0;
+}
+
+.brand-info p {
+  font-size: 16px;
+  margin: 0;
+  color: #FAEAD3;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-icons img {
+  width: 38px;
+  height: 38px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.footer-about {
+  margin-top: 10px;
+}
+
+.footer-about p {
+  width: 230px;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+/* =========================================================
+   DECORATIVE SHAPE
+========================================================= */
+.decor-ellipse {
+  position: absolute;
+  left: -103px;
+  top: 1013px;
+  width: 209px;
+  height: 198px;
+  background-color: #D25608;
+  border-radius: 50%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* =========================================================
+   ✨ UNIFIED TEXT STYLE (ADDED)
+========================================================= */
+.divider.right-2 p,
+.divider.right-6 p,
+.vision-text p,
+.divider.right-2 .text-box p,
+.divider.right-6 .text-box p,
+.vision-text .text-box p {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 40px;
+  color: #FAEAD3;
+  margin-bottom: 25px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.divider.right-2 h3,
+.divider.right-6 h3,
+.vision-text h3 {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #FAEAD3;
+  text-decoration: underline;
+  margin-bottom: 18px;
+}
+
+/* =========================================================
+   OUR VISION SECTION (fixed visibility)
+========================================================= */
+.vision-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  position: relative; /* added to help layering */
+  z-index: 2;
+}
+
+/* Top Row */
+.vision-row {
+  display: flex;
+  width: 100%;
+}
+
+.top-row .vision-left {
+  background-color: #FAEAD3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 254px;
+}
+
+.top-row .vision-right {
+  flex: 1;
+  background: url('flowers_cream_bg.jpg') no-repeat center center;
+  background-size: cover;
+  min-height: 254px; /* ensure it's visible */
+  z-index: 1;
+}
+
+/* Bottom Row */
+.bottom-row {
+  display: flex;
+  width: 100%;
+  min-height: 769px;
+}
+
+.bottom-row .vision-left {
+  background-color: #343640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  flex: 1;
+  min-height: 769px;
+  z-index: 2;
+}
+
+.bottom-row .vision-right {
+  flex: 1;
+  background: url('birds.jpg') no-repeat center center;
+  background-size: cover;
+  filter: brightness(36%);
+  min-height: 769px;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1024px) {
+  header {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .nav-item {
+    font-size: 22px;
+    letter-spacing: 0.15em;
+  }
+
+  .about-section {
+    flex-direction: column;
+    padding: 60px 20px;
+    overflow: hidden;
+  }
+
+  .about-content {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .about-content h1 {
+    font-size: 80px;
+  }
+
+  .about-content p {
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  .image-1, .image-2, .image-3, .flower-image {
+    display: none;
+  }
+
+  .footer-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .about-section {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 12px;
+    min-height: auto;
+  }
+
+  .about-content h1 { font-size: 46px; }
+  .about-content p { font-size: 16px; line-height: 24px; }
+
+  header { flex-direction: column; align-items: flex-start; height: auto; padding: 16px; }
+
+  .nav-item { font-size: 16px; }
+  .footer-column h3 { font-size: 15px; }
+  .footer-column ul li a, .footer-column p { font-size: 13px; }
+}
+
+@media (max-width: 600px) {
+  .nav-item { font-size: 13px; }
+  .about-content h1, .divider.right-1 h2, .divider.right-5 h2, .top-row .vision-left h2 { font-size: 17px; }
+  .divider.right-2 h3, .divider.right-6 h3, .vision-text h3 { font-size: 11px; }
+  .about-content p, .divider.right-2 p, .divider.right-6 p, .vision-text p { font-size: 11px; }
+  .footer-column h3 { font-size: 12px; }
+  .footer-column ul li a, .footer-column p { font-size: 10px; }
+}

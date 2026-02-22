@@ -1,0 +1,528 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Georgia", serif;
+}
+body {
+  background-color: #35363F;
+  display: flex;
+  flex-direction: column; /* stack children vertically */
+  min-height: 100vh; /* make body take full viewport height */
+}
+
+
+/* ---------- Top Navigation ---------- */
+.top-nav {
+  position: relative;
+  top: 0px; /* raised just a hair more */
+  left: 0;
+  width: 100%;
+  background-color: #f6e7d0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8em 4em;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.nav-content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-left: auto;
+  padding-left: 0; /* no extra space needed because logo is in normal flow */
+}
+
+
+.logo {
+  position: relative;
+  top: -100px;
+  left: -550px;
+  z-index: 2000;
+  margin: 0;
+  padding: 0;
+}
+
+.logo img {
+  width: 300px;
+  height: auto;
+  display: block;
+}
+
+.main-nav {
+  position: relative;
+  top: -90px; /* moves nav up without affecting logo */
+}
+
+.main-nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 2em;
+}
+
+
+.logo h1 {
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.top-nav nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  padding-top: 0px;
+}
+
+.top-nav nav ul li a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.top-nav nav ul li a.active,
+.top-nav nav ul li a:hover {
+  text-decoration: underline;
+}
+
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  background-color: #e27b2d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 270px; /* adjust as needed */
+  gap: 20px;
+  min-height: 200vh; /* full viewport height */   
+}
+
+.sidebar .icon img {
+  width: 35px;     /* adjust icon size */
+  height: 35px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.sidebar .icon img:hover {
+  transform: scale(1.1); /* small zoom on hover */
+}
+/* ---------- MAIN CONTENT ---------- */
+.explore-main {
+  margin-left: 70px; /* space for sidebar */
+  margin-top: 45px; /* space for top nav + floral header */
+  padding: 1.5em;
+  width: calc(100% - 70px); /* prevent overflow */
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+/* ---------- Explore Header ---------- */
+.explore-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
+  gap: 1em;
+  padding-top: 10px; /* add top spacing */
+}
+
+.explore-header h2 {
+  font-size: 2em;
+  color: #f5e9d3;
+}
+
+.explore-header p {
+  font-style: italic;
+  margin-top: 0.2em;
+  color: #f5e9d3;
+}
+
+
+/* SEARCH BOX */
+.search-box {
+  flex: 0 0 300px; /* fixed width */
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #f5e9d3;
+  padding-bottom: 5px;
+  background: transparent;
+  margin-right: 95px;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  color: #f5e9d3;
+  width: 100%;
+  outline: none;
+  font-size: 1em;
+}
+
+.search-box span {
+  margin-left: 5px;
+}
+
+/* RIGHT ICONS */
+
+.icons-right {
+  position: static; /* no absolute positioning */
+  display: flex;
+  gap: 1em;
+}
+
+.icons-right div {
+  background-color: #3b3a42;
+  border-radius: 50%;
+  padding: 0.6em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.icons-right div:hover {
+  background-color: #4a4952;
+}
+
+/* ---------- GALLERY GRID ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.9em;
+  align-items: stretch;
+}
+
+/* BOXES */
+.item {
+  position: relative;
+  background-color: #555;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.item:hover {
+  transform: scale(1.03);
+}
+
+/* Different box sizes */
+.item.small { height: 210px; }
+.item.medium { height: 280px; }
+.item.large { height: 360px; }
+
+/* MEDIA INSIDE BOXES */
+.media-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-container img,
+.media-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+}
+
+/* CUSTOM ICON IMAGES */
+.item-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+.item-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  opacity: 0.95;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.6));
+}
+
+.item-icon img:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* ---------- Responsive Fix ---------- */
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.6em;
+  }
+
+  .item {
+    height: 200px;
+  }
+
+  .item-icon img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .search-box {
+    flex: 1;
+    max-width: 90%;
+  }
+}
+
+/* --- Dropdown Menu for Explore (Artispo style) --- */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav ul li {
+  position: relative;
+}
+
+/* Dropdown container */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fffaf5; /* soft Artispo tone */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 10px 0;
+  min-width: 160px;
+  z-index: 10;
+}
+
+/* Dropdown links */
+.dropdown-menu li a {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  font-family: "Georgia", serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect */
+.dropdown-menu li a:hover {
+  background-color: #ffede5;
+  color: #ff6f61;
+}
+
+/* Show dropdown on hover (desktop) */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Smooth hover color for Explore link */
+.dropdown > a {
+  transition: color 0.3s ease;
+}
+
+.dropdown:hover > a {
+  color: #ff6f61;
+}
+
+/* Keep spacing */
+.main-nav ul li a {
+  padding: 8px 10px;
+}
+
+/* --- Responsive dropdown behavior --- */
+@media (max-width: 768px) {
+  .main-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    background-color: #fffaf5;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .main-nav ul li {
+    width: 100%;
+  }
+
+  .main-nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  /* Dropdown on mobile */
+  .dropdown-menu {
+    position: static;
+    display: none;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 5px 0 0 20px;
+  }
+
+  .dropdown.open .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-menu li a {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  .dropdown-menu li a:hover {
+    background-color: transparent;
+    color: #ff6f61;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-nav ul {
+    gap: 10px;
+  }
+
+  .main-nav ul li a {
+    font-size: 0.95rem;
+  }
+
+  .dropdown-menu li a {
+    font-size: 0.9rem;
+  }
+}
+
+/* --- Dropdown Menu for Explore (hover only, hidden by default) --- */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav ul li {
+  position: relative;
+}
+
+/* Hide dropdown by default */
+.dropdown-menu {
+  display: none !important;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fffaf5;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 10px 0;
+  min-width: 160px;
+  z-index: 100;
+}
+
+/* Show dropdown only when hovered */
+.dropdown:hover .dropdown-menu {
+  display: block !important;
+}
+
+/* Dropdown link styling */
+.dropdown-menu li a {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  font-family: "Georgia", serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect */
+.dropdown-menu li a:hover {
+  background-color: #ffede5;
+  color: #ff6f61;
+}
+
+/* Explore link hover color */
+.dropdown > a {
+  transition: color 0.3s ease;
+}
+
+.dropdown:hover > a {
+  color: #ff6f61;
+}
+
+/* Keep spacing consistent */
+.main-nav ul li a {
+  padding: 8px 10px;
+}
+
+
+/* ---------- Search Bar ---------- */
+.floral-header {
+  width: 100%;
+  background: url("flowers-bg.png") center/cover no-repeat;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: -170px; /* reduced from 120px */
+  margin-bottom: 0;
+}
+.floral-content {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background-image: url('flowers_cream_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.floral-search {
+  display: flex;
+  align-items: center;
+  background-color: #f5e9d3;
+  border-radius: 25px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  width: 500px;
+  max-width: 90%;
+  border: 3px solid #e27b2d;
+  margin: 15px 0;
+}
+
+.floral-search .search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.floral-search input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+}

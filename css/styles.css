@@ -1,0 +1,565 @@
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* no scroll! */
+    height: 100%;
+    width: 100%;
+}
+
+h2{
+    font:Poly;
+}
+body {
+  background-color: #f7e7ce;
+  color: #1c1c1c;
+  overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 80px;; /*padding: 1.5rem 4rem; */
+    background-color: #f7e7ce;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+}
+
+.logo h1 {
+    font-family: "Sniglet", cursive;
+    font-weight: 400;
+    font-size: 46px;
+    letter-spacing: 0.02em;
+    color: #1B1B1B;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-family: "Poly", sans-serif;
+}
+
+nav button {
+  border: none;
+  padding: 8px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.login {
+  background-color: transparent;
+  border: 2px solid #5a4a42;
+  color: #2a1f1b;
+}
+
+.signup {
+  background-color: #c94e07;
+  color: white;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4rem 6rem;
+}
+
+.hero-text h2 {
+  font-family: "Poly", serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.5px;
+  font-size: 136px;
+  line-height: 114px;
+}
+
+
+.hero-text p {
+  font-family: "Poly", serif;
+  font-size: 1.9rem;
+  color: #000000;
+  margin-top: 1.5rem;
+  padding-left: 136px;
+}
+
+.start-btn {
+  background-color: #c94e07;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: "Poly", sans-serif;
+  font-size: 1.5rem;
+  margin-left: 236px;
+  width: 250px;
+}
+
+.start-btn:hover {
+  background-color: #a53f04;
+}
+
+.hero-images {
+  position: relative;
+  width: 50%;
+}
+
+.hero-images img {
+  position: absolute;
+  border-radius: 45px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: -2;
+
+}
+
+.img1 {
+  top: -120px;
+  right: 95px;
+  transform: rotate(23deg);
+  height: 250px;
+  width: 200px;
+  
+
+}
+
+.img2 {
+  top: 150px;
+  right: 200px;
+  transform: rotate(23deg);
+  height: 400px;
+  width: 300px;
+}
+
+.img3 {
+  top: 30px;
+  right: -276px;
+  transform: rotate(23deg);
+  height: 500px;
+  width: 400px;
+}
+
+.img4{
+    height: 500px;
+    width: 400px;
+    left: -256px;
+    top: 150px;
+    z-index: -2;
+}
+
+/* --- Decorative Shapes --- */
+.shapes {
+  position:absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.circle {
+  width: 250px;
+  height: 250px;
+  background-color: #c94e07; /* deep orange */
+  border-radius: 50%;
+  position: fixed;
+  bottom: 98px;  /* makes it overlap below the hero */
+  left: -60px;    /* pushes it slightly off-screen for that cropped effect */
+  z-index: 2;     /* ensures it’s above the dark gray rectangle */
+
+}
+
+.green-line {
+  position: fixed;
+  background-color: #214b2a;
+  height: 10px;
+  border-radius: 10px;
+}
+
+.green-line.line1 {
+  top: 120px;
+  right: -60px;
+  width: 312px;
+  height: 20px;
+}
+
+.green-line.line2 {
+  top: 160px;
+  right: -60px;
+  width: 220px;
+  height: 20px;
+}
+
+.orange-block {
+  width: 180px;
+  height: 300px;
+  background-color: #c94e07;
+  position: absolute;
+  z-index: 1;
+  right: -20px;
+  bottom: -280px;
+  border-radius: 45px;
+}
+
+.green-block {
+  width: 400px;
+  height: 100px;
+  background-color: #214b2a;
+  position: absolute;
+  z-index: 0;
+  right: -20px;
+  bottom: -200px;
+  border-radius: 45px;
+}
+
+.bottom-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 236px;
+  background-color: #2C2C2C;
+  z-index: -1;
+}
+
+/* --- Base styles --- */
+.login,
+.signup {
+  font-family: "Poly", sans-serif;
+  font-size: 15px;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* --- Individual button styles --- */
+.login{
+  background-color: transparent;
+  color: #2C2C2C;
+  border: 2px solid #2C2C2C;
+}
+
+.signup{
+  background-color: #C34700;
+  color: white;
+  border: 2px solid #C34700;
+}
+
+/* --- Hover effects --- */
+.login:hover {
+  background-color: #2C2C2C;
+  color: white;
+  transform: scale(1.05); /* gentle hover pop */
+}
+
+.signup:hover {
+  background-color: #9d3700; /* darker orange */
+  border-color: #9d3700;
+  transform: scale(1.05);
+}
+
+/* ==================================================
+   RESPONSIVE FIXES — LAPTOP, TABLET & PHONE
+   (Add this at the very bottom)
+================================================== */
+
+/* ---------------- RESPONSIVENESS ---------------- */
+
+/* ---------------- RESPONSIVENESS ---------------- */
+
+/* 💻 Laptop (1024px–1366px) */
+@media (max-width: 1366px) {
+  header {
+    padding: 10px 60px;
+  }
+
+  .hero-text {
+    max-width: 90%;
+    z-index: 5;
+  }
+
+  .hero-text h2 {
+    font-size: 75px; /* ✅ slightly smaller for proportion */
+    line-height: 1.1;
+    bottom: 256px;
+  }
+
+  .hero-text p {
+    font-size: 1.4rem;
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+
+  .start-btn {
+    margin: 2rem auto 0;
+    font-size: 1.2rem;
+    width: 220px;
+    margin-left: 200px;
+
+  }
+
+  /* --- IMAGES neatly at bottom --- */
+  .hero-images {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 25px;
+    z-index: -2;
+  }
+
+  .hero-images img {
+    position: relative;
+    border-radius: 25px;
+    height: auto;
+    transform: rotate(23deg);
+  }
+
+  .img1 {
+    height: 200px;
+    width: 150px;
+    top: -210px;
+    right: -560px;
+  }
+
+  .img2 {
+    height: 300px;
+    width: 200px;
+    top: 65px;
+    right: -260px;
+  }
+
+  .img3 {
+    width: 260px;
+    top: 65px;
+    right: -300px;
+  }
+
+  .bottom-bg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #2C2C2C;
+    z-index: -1;
+  }
+
+  /* --- Decorative shapes --- */
+  .circle {
+    width: 120px;
+    height: 120px;
+    left: -40px;
+    bottom: 45px;
+  }
+
+  .green-line.line1 {
+    width: 200px;
+    height: 18px;
+    top: 120px;
+    right: -40px;
+  }
+
+  .green-line.line2 {
+    width: 160px;
+    height: 18px;
+    top: 160px;
+    right: -40px;
+  }
+
+  /* --- Side blocks keep aligned --- */
+  .orange-block {
+    position: fixed;
+    right: -30px; /* ✅ better balance */
+    bottom: 40px;
+    width: 120px;
+    height: 180px;
+    border-radius: 35px;
+    z-index: 1;
+  }
+
+  .green-block {
+    position: fixed;
+    right: -30px; /* ✅ match orange block */
+    bottom: 65px;
+    width: 220px;
+    height: 80px;
+    border-radius: 35px;
+    z-index: 0;
+  }
+}
+
+/* 📱 Tablet (768px–1023px) */
+@media (max-width: 1023px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hero-text h2 {
+    font-size: 70px;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
+
+  .hero-images {
+    flex-wrap: wrap;
+    gap: 20px;
+    bottom: 0;
+    justify-content: center;
+  }
+
+  .hero-images img {
+    width: 180px;
+    transform: rotate(5deg);
+  }
+
+  .circle {
+    width: 150px;
+    height: 150px;
+    bottom: 50px;
+  }
+
+  /* Side blocks stay smaller but aligned */
+  .orange-block {
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
+    width: 100px;
+    height: 150px;
+  }
+
+  .green-block {
+    position: fixed;
+    right: 20px;
+    bottom: 200px;
+    width: 160px;
+    height: 60px;
+  }
+}
+
+/* 📱 Phone (max-width: 767px) */
+@media (max-width: 767px) {
+  header {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .logo img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo h1 {
+    font-size: 34px;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 3rem 1rem;
+    text-align: center;
+  }
+
+  .hero-text h2 {
+    font-size: 48px;
+    line-height: 1.2;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .start-btn {
+    font-size: 1rem;
+    width: 180px;
+    margin-top: 1.5rem;
+  }
+
+  /* --- Images at bottom neatly --- */
+  .hero-images {
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    bottom: 0;
+  }
+
+  .hero-images img {
+    width: 120px;
+    transform: rotate(0deg);
+  }
+
+  .circle {
+    width: 120px;
+    height: 120px;
+    bottom: 40px;
+    left: -30px;
+  }
+
+  .green-line.line1,
+  .green-line.line2 {
+    display: none;
+  }
+
+  /* --- Smaller aligned side blocks --- */
+  .orange-block {
+    position: fixed;
+    right: 15px;
+    bottom: 30px;
+    width: 80px;
+    height: 120px;
+  }
+
+  .green-block {
+    position: fixed;
+    right: 15px;
+    bottom: 170px;
+    width: 120px;
+    height: 50px;
+  }
+}
