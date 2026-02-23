@@ -16,6 +16,7 @@
         session_destroy();
     }
 
+    // If login is required in a page, 
     function require_login(){
         if (empty($_SESSION['logged_in'])) {
             header('Location: login.php');

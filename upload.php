@@ -6,66 +6,69 @@ $error = null;
 $success = null;
 $uploadedImage = null;
 $uploadedDatetime = null;
-$uploadedCaption = null;
+$uploadedCaption = null; // Store caption
 
-// Handle POST request
+// Handle POST request for file upload
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    //For Caption
     $caption = trim($_POST['caption'] ?? '');
-
+    //Max 5MB
     $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    $maxSize = 5 * 1024 * 1024; // 5MB
-
+    $maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    
+    //Error checking
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-
         $fileTmpPath = $_FILES['image']['tmp_name'];
         $fileName = $_FILES['image']['name'];
         $fileSize = $_FILES['image']['size'];
         $fileType = $_FILES['image']['type'];
-
+        
+        //File type validation
         if (!in_array($fileType, $allowedTypes)) {
             $error = "Error: Only PNG and JPG/JPEG files are allowed.";
-        } 
+        }
+        //File size validation
         elseif ($fileSize > $maxSize) {
             $error = "Error: File size must be less than 5MB.";
-        } 
+        }
         else {
-
+            //Make unique id every upload
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
             $newFileName = uniqid('upload_', true) . '.' . $fileExtension;
             $uploadPath = 'uploads/' . $newFileName;
-
+            
+            //Create folder if does not exist
             if (!is_dir('uploads/')) {
                 if (!mkdir('uploads/', 0755, true)) {
                     $error = "Error: Could not create uploads folder.";
                 }
             }
-
+            
+            //Move file to the folder
             if (move_uploaded_file($fileTmpPath, $uploadPath)) {
-
+                // Record upload datetime
                 $upload_time = date("F d, Y - h:i A");
-
+                
+                // Save to log file
                 $logEntry = json_encode([
                     'filename' => $newFileName,
                     'datetime' => $upload_time,
                     'caption' => $caption
                 ]);
-
                 file_put_contents('uploads/log.txt', $logEntry . PHP_EOL, FILE_APPEND);
-
+                
+                // Set success message and preview data
                 $success = "Successfully uploaded!";
                 $uploadedImage = 'uploads/' . $newFileName;
                 $uploadedDatetime = $upload_time;
                 $uploadedCaption = $caption;
-
             } else {
-                $error = "Error: Failed to upload the file.";
+                $error = "Error: Failed to upload the file. Check folder permissions or server settings.";
             }
         }
-
     } else {
+        //errors
         $uploadError = $_FILES['image']['error'] ?? 'Unknown';
-
         $errorMessages = [
             0 => 'No error',
             1 => 'File exceeds upload_max_filesize in php.ini',
@@ -76,8 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             7 => 'Failed to write file to disk',
             8 => 'A PHP extension stopped the file upload'
         ];
-
-        $error = "Error: " . ($errorMessages[$uploadError] ?? 'Unknown upload error');
+        $error = "Error: " . ($errorMessages[$uploadError] ?? 'Unknown upload error (code: ' . $uploadError . ')');
     }
 }
 
@@ -90,15 +92,15 @@ $currentDateTime = date('Y-m-d H:i:s');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image - Artispo</title>
-    <link rel="stylesheet" href="./css/profile.css">
-    <link rel="stylesheet" href="./css/upload.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="upload.css">
 </head>
 
 <body>
     <header class="top-nav">
         <div class="nav-content">
         <div class="logo">
-                <img src="./img/Artispo Logo(1).png" alt="Artispo Logo">
+                <img src="Artispo Logo(1).png" alt="Artispo Logo">
             </div>
             <nav>
                 <ul>
@@ -113,73 +115,63 @@ $currentDateTime = date('Y-m-d H:i:s');
     </header>
 
     <aside class="sidebar">
-        <div class="icon"><img src="./img/Compass.png" alt="Compass"></div>
-        <div class="icon"><img src="./img/Gallery.png" alt="Gallery"></div>
-        <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
-        <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
-        <div class="icon"><img src="./img/Home.png" alt="Home"></div>
-        <div class="icon"><img src="./img/Settings.png" alt="Settings"></div>
+        <div class="icon"><img src="Compass.png" alt="Compass"></div>
+        <div class="icon"><img src="Gallery.png" alt="Gallery"></div>
+        <div class="icon"><img src="Videos.png" alt="Videos"></div>
+        <div class="icon"><img src="paint-brush-icon.png" alt="Art"></div>
+        <div class="icon"><img src="Home.png" alt="Home"></div>
+        <div class="icon"><img src="Settings.png" alt="Settings"></div>
     </aside>
 
-   <main class="profile-content">
-    <div class="upload-container">
+    <main class="profile-content">
+        <div class="upload-container">
 
-        <h2>Upload Post</h2>
+            <h2>Upload Post</h2>
 
-        <!-- SHOW FORM ONLY IF NOT SUCCESS -->
-        <?php if (!$success): ?>
-        <form action="upload.php" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <form action="upload.php" method="POST" enctype="multipart/form-data" id="uploadForm">
 
-            <label for="imageUpload" class="upload-box" id="uploadBox">
-                <div class="preview-container" id="previewContainer" style="display: none;">
-                    <img id="imagePreview" class="preview-img" src="" alt="Preview">
-                    <p class="preview-filename" id="previewFilename"></p>
-                    <span class="change-image-text">Click to change image</span>
+                <!-- Upload Box - Shows preview when image is selected -->
+                <label for="imageUpload" class="upload-box" id="uploadBox">
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="imagePreview" class="preview-img" src="" alt="Preview">
+                        <p class="preview-filename" id="previewFilename"></p>
+                        <span class="change-image-text">Click to change image</span>
+                    </div>
+                    <div class="upload-default" id="uploadDefault">
+                        <span class="upload-icon">📷</span>
+                        <div class="upload-text">Click to Upload Image</div>
+                        <div class="upload-subtext">PNG, JPG or JPEG (Max 5MB)</div>
+                    </div>
+                </label>
+
+                <input type="file" id="imageUpload" name="image" accept=".png,.jpg,.jpeg" required>
+                <textarea name="caption" class="caption-input" placeholder="Write a caption..." rows="3"></textarea>
+
+                <button type="submit" id="uploadButton">Upload Image</button>
+            </form>
+
+            <?php if (isset($error)): ?>
+                <p class="message error"><?php echo $error; ?></p>
+            <?php endif; ?>
+
+            <!-- Success Preview Section - Shows after successful upload -->
+            <?php if ($success && $uploadedImage): ?>
+                <div class="success-preview">
+                    <h3><?php echo $success; ?></h3>
+                    <img src="<?php echo htmlspecialchars($uploadedImage); ?>" alt="Uploaded Image">
+                    <p>Uploaded on: <?php echo htmlspecialchars($uploadedDatetime); ?></p>
+                    <div>
+                        <a href="profile.php" class="view-post-btn">View Post</a>
+                        <a href="upload.php" class="upload-another-btn">Upload Another</a>
+                    </div>
                 </div>
+            <?php endif; ?>
 
-                <div class="upload-default" id="uploadDefault">
-                    <span class="upload-icon">📷</span>
-                    <div class="upload-text">Click to Upload Image</div>
-                    <div class="upload-subtext">PNG, JPG or JPEG (Max 5MB)</div>
-                </div>
-            </label>
+            <br>
+            <a href="profile.php" class="back-link">Back to Profile</a>
 
-            <input type="file" id="imageUpload" name="image" accept=".png,.jpg,.jpeg" required>
-            <textarea name="caption" class="caption-input" placeholder="Write a caption..." rows="3"></textarea>
-
-            <button type="submit">Upload Image</button>
-
-        </form>
-        <?php endif; ?>
-
-        <!-- ERROR MESSAGE -->
-        <?php if (isset($error)): ?>
-            <p class="message error"><?php echo $error; ?></p>
-        <?php endif; ?>
-
-        <!-- SUCCESS PREVIEW -->
-        <?php if ($success && $uploadedImage): ?>
-            <div class="success-preview">
-                <h3><?php echo $success; ?></h3>
-                <img src="<?php echo htmlspecialchars($uploadedImage); ?>" alt="Uploaded Image">
-                <p>Uploaded on: <?php echo htmlspecialchars($uploadedDatetime); ?></p>
-
-                <?php if (!empty($uploadedCaption)): ?>
-                    <p><strong>Caption:</strong> <?php echo htmlspecialchars($uploadedCaption); ?></p>
-                <?php endif; ?>
-
-                <div>
-                    <a href="profile.php" class="view-post-btn">View Post</a>
-                    <a href="upload.php" class="upload-another-btn">Upload Another</a>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <br>
-        <a href="profile.php" class="back-link">Back to Profile</a>
-
-    </div>
-</main>
+        </div>
+    </main>
     
     <!-- Display Date and Time -->
     <div class="datetime-display">
@@ -190,7 +182,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="footer-container">
             <div class="footer-section about">
                 <div class="logo-area">
-                    <img src="./img/Artispo_logo.png" alt="Artispo Logo" class="footer-logo">
+                    <img src="Artispo_logo.png" alt="Artispo Logo" class="footer-logo">
                     <div>
                         <h2>Artispo</h2>
                         <p class="tagline">Fuel Your Imagination</p>
@@ -204,10 +196,10 @@ $currentDateTime = date('Y-m-d H:i:s');
                 <p><strong>Email:</strong> artispo@gmail.com</p>
                 <p><strong>Contact No. (Ph):</strong> +631234567891</p>
                 <div class="social-icons">
-                    <img src="./img/FB Logo.png" alt="Facebook">
-                    <img src="./img/IG Logo.png" alt="Instagram">
-                    <img src="./img/Tiktok Logo.png" alt="TikTok">
-                    <img src="./img/X Logo.png" alt="X">
+                    <img src="FB Logo.png" alt="Facebook">
+                    <img src="IG Logo.png" alt="Instagram">
+                    <img src="Tiktok Logo.png" alt="TikTok">
+                    <img src="X Logo.png" alt="X">
                 </div>
             </div>
             <div class="footer-section links">

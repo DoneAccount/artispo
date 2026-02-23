@@ -1,10 +1,40 @@
 <?php
-
 date_default_timezone_set("Asia/Manila");
 
 // Load uploaded posts
 $uploads = [];
 $logFile = 'uploads/log.txt';
+
+/*------------DELETE-------------*/
+if (isset($_POST['delete_post']) && isset($_POST['filename'])) {
+    $filenameToDelete = $_POST['filename'];
+    
+    if (file_exists($logFile)) {
+        $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $updatedLines = [];
+        
+        foreach ($lines as $line) {
+            $uploadData = json_decode($line, true);
+            
+            if ($uploadData && $uploadData['filename'] !== $filenameToDelete) {
+                $updatedLines[] = $line;
+            }
+        }
+        
+        // Write updated lines back to file
+        file_put_contents($logFile, implode(PHP_EOL, $updatedLines) . PHP_EOL);
+    }
+    
+    // Delete actual image file
+    $imagePath = 'uploads/' . $filenameToDelete;
+    if (file_exists($imagePath)) {
+        unlink($imagePath);
+    }
+    
+    // Redirect to prevent form resubmission
+    header("Location: profile.php");
+    exit();
+}
 
 if (file_exists($logFile)) {
     $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -14,7 +44,7 @@ if (file_exists($logFile)) {
             $uploads[] = $uploadData;
         }
     }
-    // Reverse to show newest first
+    //Reverse to show newest first
     $uploads = array_reverse($uploads);
 }
 
@@ -28,6 +58,7 @@ $currentDateTime = date('Y-m-d H:i:s');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artispo | Profile</title>
     <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/posts.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -40,11 +71,11 @@ $currentDateTime = date('Y-m-d H:i:s');
             </div>
             <nav>
                 <ul>
-                    <li><a href="home.html">Home</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="profile.html" class="active">Profile</a></li>
+                    <li><a href="home.php">Home</a></li>
+                    <li><a href="explore.php">Explore</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="profile.php" class="active">Profile</a></li>
                 </ul>
             </nav>
         </div>
@@ -83,34 +114,12 @@ $currentDateTime = date('Y-m-d H:i:s');
                 <span>Favorites</span>
                 <span>Saves</span>
             </div>
-            <!-- Linked to upload.php -->
             <a href="upload.php" class="add-post"><i class="fas fa-plus"></i></a>
         </div>
     </main>
 
-    <!-- Posts Section -->
-    <section class="posts-section">
-        <div class="posts-header">
-            <h2>My Posts</h2>
-        </div>
-        
-        <?php if (empty($uploads)): ?>
-            <div class="no-posts-message">
-                <p>No posts yet. Click the + button to create your first post!</p>
-            </div>
-        <?php else: ?>
-            <div class="posts-grid">
-                <?php foreach ($uploads as $upload): ?>
-                    <div class="post-card">
-                        <img src="uploads/<?php echo htmlspecialchars($upload['filename']); ?>" alt="Post Image">
-                        <div class="post-card-info">
-                            <p class="post-card-date"><?php echo htmlspecialchars($upload['datetime']); ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </section>
+    <!-- PHP INCLUDE -->
+    <?php include './includes/posts.php'; ?>
 
     <!-- Display Date and Time -->
     <div class="datetime-display">
@@ -152,15 +161,15 @@ $currentDateTime = date('Y-m-d H:i:s');
             <div class="footer-section links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Explore</a></li>
+                    <li><a href="home.php">Home</a></li>
+                    <li><a href="explore.php">Explore</a></li>
                     <ul class="sub-links">
                         <li><a href="#">Categories</a></li>
                         <li><a href="#">Mix Mode</a></li>
                     </ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="profile.php">Profile</a></li>
                     <ul class="sub-links">
                         <li><a href="#">Settings</a></li>
                     </ul>
