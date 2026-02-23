@@ -1,0 +1,240 @@
+
+    /*Upload styles*/
+
+    .upload-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #f6e7d0;
+        border-radius: 16px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    .upload-container h2 {
+        color: #35363F;
+        margin-bottom: 20px;
+    }
+
+    .upload-container form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Hide default file input */
+    .upload-container input[type="file"] {
+        display: none;
+    }
+
+    /* Modern styled upload box */
+    .upload-box {
+        display: block;
+        border: 2px dashed #e27b2d;
+        border-radius: 16px;
+        padding: 50px 20px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .upload-box:hover {
+        background-color: #fff4e6;
+        border-color: #ffb347;
+    }
+
+    .upload-box.has-preview {
+        padding: 20px;
+        border-style: solid;
+    }
+
+    .upload-icon {
+        font-size: 50px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .upload-text {
+        font-weight: bold;
+        color: #35363F;
+    }
+
+    .upload-subtext {
+        font-size: 14px;
+        color: gray;
+        margin-top: 5px;
+    }
+
+    .upload-container button {
+        background-color: #e27b2d;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        margin-top: 20px;
+    }
+
+    .upload-container button:hover {
+        background-color: #ffb347;
+    }
+
+    .message {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .success-message {
+        color: green;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .error { color: red; }
+
+    .back-link {
+        margin-top: 20px;
+        display: inline-block;
+        color: #e27b2d;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .datetime-display {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background-color: rgba(246, 231, 208, 0.9);
+        border: 1px solid #e27b2d;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+        color: #35363F;
+        font-weight: bold;
+        z-index: 1000;
+    }
+
+    /* Image preview in upload box */
+    .preview-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .preview-img {
+        max-width: 100%;
+        max-height: 250px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .preview-filename {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .change-image-text {
+        font-size: 12px;
+        color: #e27b2d;
+        cursor: pointer;
+    }
+
+    /* Success Preview Section */
+    .success-preview {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .success-preview h3 {
+        color: #4CAF50;
+        margin-bottom: 15px;
+    }
+
+    .success-preview img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .success-preview p {
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .view-post-btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 12px 25px;
+        background-color: #e27b2d;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .view-post-btn:hover {
+        background-color: #ffb347;
+    }
+
+    .upload-another-btn {
+        display: inline-block;
+        margin-top: 10px;
+        margin-left: 10px;
+        padding: 12px 25px;
+        background-color: #666;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .upload-another-btn:hover {
+        background-color: #888;
+    }
+
+    /* Caption Input Styles */
+
+.caption-input {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    resize: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.caption-input:focus {
+    outline: none;
+    border-color: #e27b2d;
+    box-shadow: 0 0 0 2px rgba(226, 123, 45, 0.15);
+}
+
+.caption-input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* Optional: Better spacing between input and button */
+
+.upload-container button {
+    margin-top: 20px;
+}

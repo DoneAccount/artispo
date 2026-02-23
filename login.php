@@ -1,3 +1,26 @@
+<?php
+    require 'sessions.php';
+
+    if($logged_in){
+        header('Location: account.php');
+        exit;
+    }
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $correct_email = "s@sample.com";
+        $correct_pass = "password123";
+
+        if($_POST['email'] == $correct_email && $_POST['password'] == $correct_pass ){
+            login();
+            header('Location: account.php');
+            exit;
+        } else {
+            echo "Invalid login.";
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
