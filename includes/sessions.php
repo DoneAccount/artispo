@@ -16,7 +16,7 @@
         session_destroy();
     }
 
-    // If login is required in a page, 
+    // If login is required in a page, place it on the top of a page.
     function require_login(){
         if (empty($_SESSION['logged_in'])) {
             header('Location: login.php');

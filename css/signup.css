@@ -242,6 +242,23 @@ main {
   z-index: -1;
 }
 
+/* ================= ERROR BOX ================= */
+
+.error-box {
+    background-color: #fce4e4;
+    border: 1px solid #fcc2c2;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.error {
+    color: #cc0033;
+    font-size: 0.9em;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
 /* ========================================================= */
 /* =================== RESPONSIVE ========================== */
 /* ========================================================= */

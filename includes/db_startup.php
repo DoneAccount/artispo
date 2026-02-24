@@ -1,25 +1,30 @@
 <?php
+    require_once "./includes/input_sanitization.php";
 
-    $servername = "localhost";
-    $username = "novusego";
-    $password = "r00taccessG";
-    $db_name = "artispo";
+    $SERVERNAME = "localhost";
+    $USERNAME = "root";
+    $PASSWORD = "";
+    $DB_NAME = "artispo";
 
-    try {
-        $connection = new PDO("mysql:host=$servername; dbname=$db_name", $username, $password);
+    function make_db_connection($servername, $db_name, $username, $password) {
+        try {
+            $connection = new PDO("mysql:host=$servername; dbname=$db_name", $username, $password);
 
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        // Debug
-        echo "Connected successfully!";
-    } catch (\PDOException $th) {
-        die("Connection failed: " . $th->getMessage());
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            return $connection;
+
+            // Debug
+            // echo "Connected successfully!";
+        } catch (\PDOException $th) {
+            die("Connection failed: " . $th->getMessage());
+        }
     }
 
+    // SQL Requests
+
     // Make a custom SQL request for unspecific situations.
-    function customSqlRequest($sql_request, $values_array, $custom_echo = "") {
-        global $connection;
-        
+    function sqlRequest($connection, $sql_request, $values_array, $custom_echo = "") {;
         try {
             $request = $connection->prepare($sql_request);
             $request_success = $request->execute($values_array);
@@ -45,7 +50,21 @@
     // Premade SQL Requests
 
     // Register / Sign Up function
-    function register() {
+    function register($connection, $username, $email, $user_password) {
+        try {
+            // Create a new account in the database
+            sqlRequest(
+                $connection,
+                "INSERT INTO users(username, email, user_password)
+                VALUES (?, ?, ?)",
+                [$username, $email, $user_password],
+                "<p class='account-made'> Your account has been successfully made! </p>"
+            );
+            
+        } catch (\PDOException $th) {
+            die("Connection failed: " . $th->getmessage());
+        }
+
         return;
     }
 

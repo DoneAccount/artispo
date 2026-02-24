@@ -6,7 +6,7 @@ $error = null;
 $success = null;
 $uploadedImage = null;
 $uploadedDatetime = null;
-$uploadedCaption = null; // Store caption
+$uploadedCaption = null;
 
 // Handle POST request for file upload
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -127,8 +127,9 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="upload-container">
 
             <h2>Upload Post</h2>
-
-            <form action="upload.php" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <!--Wrapped the entire <form> inside a PHP condition. -->
+            <?php if (!$success): ?>
+                <form action="upload.php" method="POST" enctype="multipart/form-data" id="uploadForm">
 
                 <!-- Upload Box - Shows preview when image is selected -->
                 <label for="imageUpload" class="upload-box" id="uploadBox">
@@ -149,6 +150,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
                 <button type="submit" id="uploadButton">Upload Image</button>
             </form>
+            <?php endif; ?>
 
             <?php if (isset($error)): ?>
                 <p class="message error"><?php echo $error; ?></p>
@@ -247,20 +249,6 @@ $currentDateTime = date('Y-m-d H:i:s');
                 if (file) {
                     // Validate file type
                     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-                    if (!allowedTypes.includes(file.type)) {
-                        alert('Please select a PNG or JPG/JPEG file.');
-                        imageInput.value = '';
-                        return;
-                    }
-                    
-                    // Validate file size (5MB max)
-                    const maxSize = 5 * 1024 * 1024;
-                    if (file.size > maxSize) {
-                        alert('File size must be less than 5MB.');
-                        imageInput.value = '';
-                        return;
-                    }
-                    
                     // Create preview
                     const reader = new FileReader();
                     reader.onload = function(e) {
@@ -300,18 +288,7 @@ $currentDateTime = date('Y-m-d H:i:s');
                 if (file) {
                     // Validate file type
                     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-                    if (!allowedTypes.includes(file.type)) {
-                        alert('Please select a PNG or JPG/JPEG file.');
-                        return;
-                    }
-                    
-                    // Validate file size (5MB max)
-                    const maxSize = 5 * 1024 * 1024;
-                    if (file.size > maxSize) {
-                        alert('File size must be less than 5MB.');
-                        return;
-                    }
-                    
+                   
                     // Create preview
                     const reader = new FileReader();
                     reader.onload = function(e) {

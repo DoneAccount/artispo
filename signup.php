@@ -1,6 +1,39 @@
 <?php
 
-  
+require_once "./includes/db_startup.php";
+require_once "./includes/input_sanitization.php";
+require_once "./includes/sessions.php";
+
+// Upon posting, acquire all variables
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $username = $_POST["username"];
+  $email = $_POST["email"];
+  $password = $_POST["password"];
+  $confirm_password = $_POST["confirmPassword"];
+
+  $connection = make_db_connection("localhost", "artispo", "root", "");
+
+  // Check for errors while registering
+  $errors_array = [];
+
+  if (!is_username_unique($username)) {
+    $errors_array[] = "Username already exists.";
+  }
+
+  if (!is_email_unique($email)) {
+    $errors_array[] = "Email is already used.";
+  }
+
+  array_merge($errors_array, is_password_strong($password));
+
+  if (empty($errors_array)) {
+    register($connection, $username, $email, $password);
+    login();
+    header("Location: home.php");
+  }
+}
+
+
 
 ?>
 
@@ -31,10 +64,19 @@
       <img src="./img/flowers_black_bg.jpg" class="img3" alt="Floral Art">
     </div>
 
+    <!-- Error box -->
+    <?php if (!empty($errors_array)): ?>
+    <div class="error-box">
+      <?php foreach ($errors_array as $error): ?>
+        <p class="error"><?php echo htmlspecialchars($error); ?></p>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
     <!-- Sign-Up Box -->
     <div class="signup-box">
       <h2>Sign Up</h2>
-      <form id="signupForm">
+      <form id="signupForm" method="POST">
         <input type="text" id="username" name="username" placeholder="Username" required>
 
         <input type="email" id="email" name="email" placeholder="Email Address" required>
@@ -48,12 +90,14 @@
         <a href="home.php">
           <button type="submit" class="continue">Continue</button>
 
+        <!-- Removed the google button
         <div class="or">or</div>
 
         <button type="button" class="google-btn">
           <img src="./img/google_logo.png" alt="Google Logo">
           Continue with Google
         </button>
+        -->
 
         <p class="terms">
           By continuing, you agree to Artispo’s
@@ -70,33 +114,5 @@
     <div class="green-block"></div>
     <div class="bottom-bg"></div>
   </main>
-
-  <script>
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const password = document.getElementById("password");
-      const confirmPassword = document.getElementById("confirmPassword");
-
-      // Let built-in validation handle empty or invalid inputs
-      if (!this.checkValidity()) return;
-
-      // Check if passwords match
-      if (password.value !== confirmPassword.value) {
-        e.preventDefault();
-        alert("⚠️ Passwords do not match. Please re-type your password.");
-        confirmPassword.focus();
-        return;
-      }
-
-      alert("🎨 Account created successfully!");
-      console.log("User signed up successfully:", {
-        username: document.getElementById("username").value.trim(),
-        email: document.getElementById("email").value.trim(),
-      });
-
-      this.reset();
-    });
-  </script>
-
 </body>
 </html>
