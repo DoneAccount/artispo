@@ -44,7 +44,7 @@
     }
 
     // Password must have at least one special character
-    if (!preg_match('/[#$%^&*()+=\-\[\]\';,.\/{}|":<>?~\\\\]/', $password)) {
+    if (!preg_match('/[@#_$%^&*()+=\-\[\]\';,.\/{}|":<>?~\\\\]/', $password)) {
         $error_array[] = "Password must have at least one special character.";
     }
 
