@@ -24,6 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors_array[] = "Email is already used.";
   }
 
+  if ($password == $confirm_password) {
+    $errors_array[] = "Passwords do not match.";
+  }
+
   array_merge($errors_array, is_password_strong($password));
 
   if (empty($errors_array)) {
