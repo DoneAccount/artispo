@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   array_merge($errors_array, is_password_strong($password));
 
   if (empty($errors_array)) {
-    register($connection, $username, $email, password_hash($password, PASSWORD_ARGON2_DEFAULT_MEMORY_COST));
+    register($connection, $username, $email, password_hash($password, PASSWORD_ARGON2ID));
     login();
     header("Location: home.php");
   }
