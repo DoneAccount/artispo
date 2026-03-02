@@ -401,7 +401,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         position: absolute;
         top: 20px;
         right: 30px;
-        color: #fff;
+        color: #000;
         font-size: 35px;
         font-weight: bold;
         cursor: pointer;
