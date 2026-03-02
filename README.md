@@ -1,5 +1,5 @@
 # artispo
-Final second year, second semester group project for HOLY ANGEL UNIVERSITY
+Final second year, second semester group project for HOLY ANGEL UNIVERSITY\
 **Members:**\
 Abrazado, Jin Gaila\
 Badrina, Joshua\
