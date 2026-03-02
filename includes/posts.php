@@ -64,8 +64,8 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 <!-- Modal for Post Details -->
 <div id="postModal" class="modal">
-    <span class="modal-close" onclick="closeModal()">&times;</span>
     <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
         <div class="modal-image">
             <img id="modalImage" src="" alt="Post Image">
         </div>
@@ -518,4 +518,8 @@ $currentDateTime = date('Y-m-d H:i:s');
             height: 200px;
         }
     }
+
+    .modal-content {
+    position: relative;   
+}
 </style>
