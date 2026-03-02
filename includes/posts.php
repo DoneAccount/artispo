@@ -47,6 +47,18 @@ $currentDateTime = date('Y-m-d H:i:s');
                         <div class="horizontal-post-card-info">
                             <p class="horizontal-post-card-date"><?php echo htmlspecialchars($upload['datetime']); ?></p>
                             <p class="horizontal-post-card-caption">
+                                <?php if (!empty($upload['hashtags'])): ?>
+                            <div class="post-hashtags">
+                                <?php 
+                                    $tags = explode(",", $upload['hashtags']);
+                                    foreach ($tags as $tag):
+                                ?>
+                                    <span class="hashtag">
+                                        <?php echo htmlspecialchars(trim($tag)); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                                 <?php 
                                 $caption = $upload['caption'] ?? 'No caption';
                                 // Highlight hashtags
@@ -106,7 +118,8 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="post-data" 
              data-filename="<?php echo htmlspecialchars($upload['filename']); ?>"
              data-datetime="<?php echo htmlspecialchars($upload['datetime']); ?>"
-             data-caption="<?php echo htmlspecialchars($upload['caption'] ?? ''); ?>">
+             data-caption="<?php echo htmlspecialchars($upload['caption'] ?? ''); ?>"
+             data-hashtags="<?php echo htmlspecialchars($upload['hashtags'] ?? ''); ?>">
         </div>
     <?php endforeach; ?>
 </div>
@@ -119,7 +132,8 @@ $currentDateTime = date('Y-m-d H:i:s');
         postsData.push({
             filename: post.dataset.filename,
             datetime: post.dataset.datetime,
-            caption: post.dataset.caption
+            caption: post.dataset.caption,
+            hashtags: post.dataset.hashtags
         });
     });
 
@@ -157,8 +171,15 @@ $currentDateTime = date('Y-m-d H:i:s');
         modalDateTimeFull.textContent = post.datetime;
         
         let captionText = post.caption || 'No caption';
-        captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
         modalCaption.innerHTML = captionText;
+
+        if (post.hashtags) {
+            let tags = post.hashtags.split(",");
+            tags.forEach(tag => {
+                modalCaption.innerHTML += 
+                    ' <span class="hashtag">' + tag.trim() + '</span>';
+            });
+        }
 
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -459,7 +480,7 @@ $currentDateTime = date('Y-m-d H:i:s');
     }
     
     .modal-caption .hashtag {
-        color: #e27b2d;
+        color: white;
         font-weight: 500;
     }
     
@@ -521,5 +542,20 @@ $currentDateTime = date('Y-m-d H:i:s');
 
     .modal-content {
     position: relative;   
+}
+
+.post-hashtags {
+    margin-top: 8px;
+}
+
+.hashtag {
+    display: inline-block;
+    background-color: orange;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    margin-right: 6px;
+    margin-top: 4px;
 }
 </style>
