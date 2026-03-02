@@ -92,35 +92,35 @@ $currentDateTime = date('Y-m-d H:i:s');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image - Artispo</title>
-    <link rel="stylesheet" href="profile.css">
-    <link rel="stylesheet" href="upload.css">
+    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/upload.css">
 </head>
 
 <body>
     <header class="top-nav">
         <div class="nav-content">
         <div class="logo">
-                <img src="Artispo Logo(1).png" alt="Artispo Logo">
+                <img src="./img/Artispo Logo(1).png" alt="Artispo Logo">
             </div>
             <nav>
                 <ul>
-                    <li><a href="home.html">Home</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="home.php">Home</a></li>
+                    <li><a href="explore.php">Explore</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="profile.php">Profile</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <aside class="sidebar">
-        <div class="icon"><img src="Compass.png" alt="Compass"></div>
-        <div class="icon"><img src="Gallery.png" alt="Gallery"></div>
-        <div class="icon"><img src="Videos.png" alt="Videos"></div>
-        <div class="icon"><img src="paint-brush-icon.png" alt="Art"></div>
-        <div class="icon"><img src="Home.png" alt="Home"></div>
-        <div class="icon"><img src="Settings.png" alt="Settings"></div>
+        <div class="icon"><img src="./img/Compass.png" alt="Compass"></div>
+        <div class="icon"><img src="./img/Gallery.png" alt="Gallery"></div>
+        <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
+        <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
+        <div class="icon"><img src="./img/Home.png" alt="Home"></div>
+        <div class="icon"><img src="./img/Settings.png" alt="Settings"></div>
     </aside>
 
     <main class="profile-content">
@@ -184,7 +184,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="footer-container">
             <div class="footer-section about">
                 <div class="logo-area">
-                    <img src="Artispo_logo.png" alt="Artispo Logo" class="footer-logo">
+                    <img src="./img/Artispo_logo.png" alt="Artispo Logo" class="footer-logo">
                     <div>
                         <h2>Artispo</h2>
                         <p class="tagline">Fuel Your Imagination</p>
@@ -198,10 +198,10 @@ $currentDateTime = date('Y-m-d H:i:s');
                 <p><strong>Email:</strong> artispo@gmail.com</p>
                 <p><strong>Contact No. (Ph):</strong> +631234567891</p>
                 <div class="social-icons">
-                    <img src="FB Logo.png" alt="Facebook">
-                    <img src="IG Logo.png" alt="Instagram">
-                    <img src="Tiktok Logo.png" alt="TikTok">
-                    <img src="X Logo.png" alt="X">
+                    <img src="./img/FB Logo.png" alt="Facebook">
+                    <img src="./img/IG Logo.png" alt="Instagram">
+                    <img src="./img/Tiktok Logo.png" alt="TikTok">
+                    <img src="./img/X Logo.png" alt="X">
                 </div>
             </div>
             <div class="footer-section links">
