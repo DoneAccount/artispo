@@ -24,14 +24,6 @@ $currentDateTime = date('Y-m-d H:i:s');
 <section class="posts-section" style="padding: 20px; max-width: 1400px; margin: 0 auto;">
     <div class="posts-header">
         <h2>My Posts</h2>
-        <div class="scroll-buttons">
-            <button class="scroll-btn" onclick="scrollPosts('left')">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="scroll-btn" onclick="scrollPosts('right')">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
     </div>
     
     <?php if (empty($uploads)): ?>
@@ -39,13 +31,19 @@ $currentDateTime = date('Y-m-d H:i:s');
             <p>No posts yet. Click the + button to create your first post!</p>
         </div>
     <?php else: ?>
-        <div class="horizontal-posts-container" id="postsContainer">
-            <div class="horizontal-posts" id="postsTrack">
+        
+        <div class="posts-grid">
                 <?php foreach ($uploads as $index => $upload): ?>
-                    <div class="horizontal-post-card" onclick="openModal(<?php echo $index; ?>)">
-                        <img src="uploads/<?php echo htmlspecialchars($upload['filename']); ?>" alt="Post Image" onerror="this.src='https://via.placeholder.com/350x250?text=Image+Not+Found'">
+                    <div class="post-card" onclick="openModal(<?php echo $index; ?>)">
+                        <!--DELETE BUTTON-->
+                        <form method="POST" class="delete-form" onclick="event.stopPropagation()">
+                            <input type="hidden" name="filename" value="<?php echo htmlspecialchars($upload['filename']); ?>">
+                            <button type="submit" name="delete_post" class="delete-btn" onclick="return confirm('Delete this post?');">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                        <img src="uploads/<?php echo htmlspecialchars($upload['filename']); ?>" alt="Post Image" onerror="this.src='https://via.placeholder.com/600x600?text=Image+Not+Found'">
                         <div class="horizontal-post-card-info">
-                            <p class="horizontal-post-card-date"><?php echo htmlspecialchars($upload['datetime']); ?></p>
                             <p class="horizontal-post-card-caption">
                                 <?php if (!empty($upload['hashtags'])): ?>
                             <div class="post-hashtags">
@@ -68,20 +66,22 @@ $currentDateTime = date('Y-m-d H:i:s');
                             </p>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php endif; ?>
-</section>
 
-<!-- Modal for Post Details -->
+                <?php endforeach; ?>
+
+        </div>
+
+    <?php endif; ?>
+
+</section>
+<!-- Modal Post Details -->
 <div id="postModal" class="modal">
     <div class="modal-content">
-        <span class="modal-close" onclick="closeModal()">&times;</span>
         <div class="modal-image">
             <img id="modalImage" src="" alt="Post Image">
         </div>
         <div class="modal-details">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
             <div class="modal-user">
                 <div class="profile-img-small">
                     <img src="https://images.unsplash.com/photo-1690994268660-f1b243691eb6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=736" alt="Profile">
@@ -137,24 +137,6 @@ $currentDateTime = date('Y-m-d H:i:s');
         });
     });
 
-    // Horizontal scroll function
-    function scrollPosts(direction) {
-        const container = document.getElementById('postsContainer');
-        const scrollAmount = 380;
-        
-        if (direction === 'left') {
-            container.scrollBy({
-                left: -scrollAmount,
-                behavior: 'smooth'
-            });
-        } else {
-            container.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    }
-
     // Modal functions
     function openModal(index) {
         const post = postsData[index];
@@ -171,15 +153,8 @@ $currentDateTime = date('Y-m-d H:i:s');
         modalDateTimeFull.textContent = post.datetime;
         
         let captionText = post.caption || 'No caption';
+        captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
         modalCaption.innerHTML = captionText;
-
-        if (post.hashtags) {
-            let tags = post.hashtags.split(",");
-            tags.forEach(tag => {
-                modalCaption.innerHTML += 
-                    ' <span class="hashtag">' + tag.trim() + '</span>';
-            });
-        }
 
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -204,39 +179,10 @@ $currentDateTime = date('Y-m-d H:i:s');
         }
     });
 
-    function likePost() {
-        alert('Post liked! ❤️');
-    }
-
-    function sharePost() {
-        const shareText = 'Check out this amazing artwork on Artispo!';
-        
-        if (navigator.share) {
-            navigator.share({
-                title: 'Artispo Post',
-                text: shareText,
-                url: window.location.href
-            }).catch(console.error);
-        } else {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert('Link copied to clipboard! 📋');
-            }).catch(() => {
-                alert('Share feature available. Link: ' + window.location.href);
-            });
-        }
-    }
-
-    document.querySelectorAll('.horizontal-post-card img').forEach(img => {
-        img.addEventListener('error', function() {
-            this.src = 'https://via.placeholder.com/350x250?text=Image+Not+Found';
-        });
-    });
-
     document.getElementById('modalImage').addEventListener('error', function() {
         this.src = 'https://via.placeholder.com/600x600?text=Image+Not+Found';
     });
 </script>
-
 <style>
     /* Horizontal Posts Container */
     .horizontal-posts-container {
@@ -331,7 +277,7 @@ $currentDateTime = date('Y-m-d H:i:s');
     }
     
     .posts-header h2 {
-        color: #35363F;
+        color: #e27b2d;
         margin: 0;
     }
     
@@ -378,10 +324,11 @@ $currentDateTime = date('Y-m-d H:i:s');
         display: flex;
         max-width: 1000px;
         width: 95%;
-        background-color: #fff;
+        background-color: #f6e7d0;
         border-radius: 12px;
         overflow: hidden;
         animation: modalSlide 0.3s ease;
+        position: relative;
     }
     
     @keyframes modalSlide {
@@ -415,9 +362,10 @@ $currentDateTime = date('Y-m-d H:i:s');
         padding: 30px;
         display: flex;
         flex-direction: column;
-        background-color: #fffbf5;
+        background-color: #f6e7d0;
     }
     
+/* Close Button inside the Post/Sidebar */
     .modal-close {
         position: absolute;
         top: 20px;
@@ -432,6 +380,8 @@ $currentDateTime = date('Y-m-d H:i:s');
     
     .modal-close:hover {
         color: #e27b2d;
+         background: none;
+         outline: none;
     }
     
     .modal-user {
@@ -439,7 +389,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         align-items: center;
         margin-bottom: 20px;
         padding-bottom: 20px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e27b2d;
     }
     
     .modal-user .profile-img-small {
@@ -480,14 +430,14 @@ $currentDateTime = date('Y-m-d H:i:s');
     }
     
     .modal-caption .hashtag {
-        color: white;
+        color: #e27b2d;
         font-weight: 500;
     }
     
     .modal-meta {
         margin-top: 20px;
         padding-top: 20px;
-        border-top: 1px solid #eee;
+        border-top: 1px solid #e27b2d;
         color: #888;
         font-size: 14px;
     }

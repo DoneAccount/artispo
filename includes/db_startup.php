@@ -67,7 +67,7 @@
             // Create a new account in the database
             sqlRequest(
                 $connection,
-                "INSERT INTO users(user_id, username, email, user_password)
+                "INSERT INTO users(user_id, username, email, password)
                 VALUES (?, ?, ?, ?)",
                 [uuidv4(), $username, $email, $user_password],
                 "<p class='account-made'> Your account has been successfully made! </p>"

@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!in_array($fileType, $allowedTypes)) {
             $error = "Error: Only PNG and JPG/JPEG files are allowed.";
         }
+
         //File size validation
         elseif ($fileSize > $maxSize) {
             $error = "Error: File size must be less than 5MB.";
@@ -92,25 +93,16 @@ $currentDateTime = date('Y-m-d H:i:s');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image - Artispo</title>
-    <link rel="stylesheet" href="./css/profile.css">
     <link rel="stylesheet" href="./css/upload.css">
+    <link rel="stylesheet" href="./css/profile.css">
 </head>
 
 <body>
     <header class="top-nav">
         <div class="nav-content">
         <div class="logo">
-                <img src="./img/Artispo Logo(1).png" alt="Artispo Logo">
+            <img src="./img/Artispo_logo_long.png" alt="Artispo Logo">
             </div>
-            <nav>
-                <ul>
-                    <li><a href="home.php">Home</a></li>
-                    <li><a href="explore.php">Explore</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="contact.php">Contact</a></li>
-                    <li><a href="profile.php">Profile</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -207,15 +199,15 @@ $currentDateTime = date('Y-m-d H:i:s');
             <div class="footer-section links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Explore</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="explore.php">Explore</a></li>
                     <ul class="sub-links">
                         <li><a href="#">Categories</a></li>
-                        <li><a href="#">Mix Mode</a></li>
+                        <li><a href="explore.php">Mix Mode</a></li>
                     </ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="profile.php">Profile</a></li>
                     <ul class="sub-links">
                         <li><a href="#">Settings</a></li>
                     </ul>

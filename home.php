@@ -13,26 +13,6 @@
         <img src="./img/Artispo_logo.png" alt="Artispo Logo">
         <h1>Artispo</h1>
     </div>
-    <nav>
-        <ul>
-            <li><a href="home.php" class="active">Home</a></li>
-
-            <!-- Dropdown for Explore -->
-            <li class="dropdown">
-                <a href="explore.php">Explore</a>
-                <ul class="dropdown-menu">
-                    <li><a href="explore.php">Mix Mode</a></li>
-                    <li><a href="exploreImages.php">Images</a></li>
-                    <li><a href="exploreVideos.php">Videos</a></li>
-                    <li><a href="exploreMaterials.php">Materials</a></li>
-                </ul>
-            </li>
-
-            <li><a href="about.php">About Us</a></li>
-            <li><a href="contact.php">Contact</a></li>
-            <li><a href="profile.php">Profile</a></li>
-        </ul>
-    </nav>
 </header>
 
 
@@ -139,15 +119,15 @@
       <div class="footer-section links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Explore</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="explore.php">Explore</a></li>
           <ul class="sub-links">
             <li><a href="#">Categories</a></li>
-            <li><a href="#">Mix Mode</a></li>
+            <li><a href="explore.php">Mix Mode</a></li>
           </ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Profile</a></li>
+          <li><a href="about.php">About Us</a></li>
+          <li><a href="contact.php">Contact</a></li>
+          <li><a href="profile.php">Profile</a></li>
           <ul class="sub-links">
             <li><a href="#">Settings</a></li>
           </ul>

@@ -28,27 +28,22 @@ body {
 }
 .nav-content {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start; /* keep logo left */
   align-items: center;
   width: 100%;
-  margin-left: auto;
-  padding-left: 0; /* no extra space needed because logo is in normal flow */
 }
 
 
 .logo {
-  position: relative;
-  top: -100px;
-  left: -550px;
-  z-index: 2000;
-  margin: 0;
+  position: static;   /* remove weird positioning */
+  margin: -50px;
   padding: 0;
 }
-
 .logo img {
-  width: 300px;
-  height: auto;
+  width: 270px;
+  height: 240px;
   display: block;
+
 }
 
 .main-nav {
@@ -92,7 +87,7 @@ body {
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 60px;

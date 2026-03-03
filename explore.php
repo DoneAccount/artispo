@@ -14,37 +14,7 @@
       <div class="logo">
         <img src="./img/Artispo_logo_long.png" alt="Artispo Logo">
       </div>
-
-      <nav class="main-nav">
-        <ul>
-          <li><a href="home.php">Home</a></li>
-
-          <!-- Dropdown for Explore -->
-          <li class="dropdown">
-            <a href="explore.php" class="active">Explore</a>
-            <ul class="dropdown-menu">
-              <li><a href="explore.php">Mix Mode</a></li>
-              <li><a href="exploreImages.php">Images</a></li>
-              <li><a href="exploreVideos.php">Videos</a></li>
-              <li><a href="exploreMaterials.php">Materials</a></li>
-            </ul>
-          </li>
-
-          <li><a href="about.php">About Us</a></li>
-          <li><a href="contact.php">Contact</a></li>
-          <li><a href="Profile.php">Profile</a></li>
-        </ul>
-      </nav>
     </div>
-
-    <section class="floral-header">
-      <div class="floral-content">
-        <div class="floral-search">
-          <img src="./img/magnifying-glass.png" alt="Search Icon" class="search-icon">
-          <input type="text" placeholder="Search for images, videos, products, and more!">
-        </div>
-      </div>
-    </section>
   </header>
 
   <!-- Sidebar -->
@@ -71,8 +41,6 @@
 </aside>
 
   
-
- 
   <!-- Main Content -->
 <main class="explore-main">
     <div class="explore-header">
@@ -85,9 +53,8 @@
         <span>🔍</span>
       </div>
       <div class="icons-right">
-        <div class="bell">🔔</div>
-        <div class="profile">👤</div>
-      </div>
+        <a href=" " class="bell">🔔</a>
+        <a href="profile.php" class="profile">👤</a>      </div>
     </div>
 
    <!-- Gallery Grid -->
