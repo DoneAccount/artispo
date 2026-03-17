@@ -1,22 +1,24 @@
 <?php
-    require 'sessions.php';
+    require_once './includes/sessions.php';
+    require_once './includes/db_startup.php';
+
+    $login_info = "";
 
     if($logged_in){
-        header('Location: account.php');
+        header('Location: home.php');
         exit;
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $correct_email = "s@sample.com";
-        $correct_pass = "password123";
+      // Start SQL Connection
+      $connection = make_db_connection("localhost", "artispo", "root", "");
 
-        if($_POST['email'] == $correct_email && $_POST['password'] == $correct_pass ){
-            login();
-            header('Location: account.php');
-            exit;
-        } else {
-            echo "Invalid login.";
-        }
+      // Get POST queries
+      $username = $_POST["username"];
+      $password = $_POST["password"];
+
+      // Get login owo
+      $login_info = login_page($connection, $username, $password);
     }
 
     
@@ -43,6 +45,7 @@
 
   <!-- MAIN -->
   <main>
+    <?php echo $login_info; ?>
     <!-- Decorative Images -->
     <div class="hero-images">
       <img src="./img/painting.jpg" class="img1" alt="Painting 1">
@@ -53,7 +56,7 @@
     <!-- Log-In Box -->
     <div class="login-box">
       <h2>Log In</h2>
-      <form id="loginForm">
+      <form id="loginForm" method="POST">
         <input type="text" id="username" name="username" placeholder="Username or Email Address" required>
 
         <div class="password-container">
@@ -84,6 +87,7 @@
     <div class="bottom-bg"></div>
   </main>
 
+  <!-- 
   <script>
     document.getElementById("loginForm").addEventListener("submit", function(e) {
       e.preventDefault();
@@ -106,6 +110,7 @@
       window.location.href = "home.php";
     });
   </script>
+  -->
 
 </body>
 </html>
