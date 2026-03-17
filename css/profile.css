@@ -38,7 +38,7 @@ body {
 
 
 .logo {
-  position: fixed;
+  position: absolute;
   top: -100px;
   right: 90%;
   z-index: 2000;
@@ -79,21 +79,24 @@ body {
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-  position: absolute;  /* stays in layout */
+  position: fixed;
   top: 0;
   left: 0;
   width: 60px;
+  height: 100vh;
+
   background-color: #e27b2d;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 270px;  /* space above icons */
-  padding-bottom: 100px; /* space below icons — increase as needed */
+
+  padding-top: 270px;
+  padding-bottom: 100px;
   gap: 20px;
-  min-height: 100%;    /* grows with content */
+
   z-index: 1;
 }
-
 
 
 
@@ -493,4 +496,37 @@ body {
   }
 }
 
+/* Back To Top Button */
 
+#backToTopBtn {
+    position: fixed;
+    bottom: 320px;
+    right: 40px;
+    display: none;
+    z-index: 999;
+
+    border: none;
+    outline: none;
+    background-color: rgba(246, 231, 208, 0.9);;
+    color: #35363F;
+
+    cursor: pointer;
+    padding: 10px 16px;
+
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: all 0.3s ease;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+#backToTopBtn:hover {
+    background-color: #e27b2d;
+    transform: scale(1.05);
+}
