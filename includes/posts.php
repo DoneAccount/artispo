@@ -20,6 +20,7 @@ if (file_exists($logFile)) {
 $currentDateTime = date('Y-m-d H:i:s');
 ?>
 
+
 <!-- Posts Section with Horizontal Layout -->
 <section class="posts-section" style="padding: 20px; max-width: 1400px; margin: 0 auto;">
     <div class="posts-header">
@@ -152,7 +153,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         modalDateTime.textContent = post.datetime;
         modalDateTimeFull.textContent = post.datetime;
         
-        let captionText = post.caption || 'No caption';
+        let captionText = post.caption || '<i>No caption</i>';
         captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
         modalCaption.innerHTML = captionText;
 
