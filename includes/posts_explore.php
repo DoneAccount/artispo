@@ -62,7 +62,7 @@
     });
 
     // Modal functions
-    function openModal(index) {
+    function openPostModal(index) {
         const post = postsData[index];
         if (!post) return;
 

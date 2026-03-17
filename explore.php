@@ -248,7 +248,7 @@ $filter = $_GET['filter'] ?? 'all';
   
 </script>
 
-<?php include './includes/post_modal.php'; ?>
+<?php include './includes/posts_explore.php'; ?>
 
 </body>
 </html>
