@@ -80,4 +80,34 @@
         return;
     }
 
+    function login_page($connection, $username, $user_password) {
+        try {
+            // Initialize empty array
+            $returned_array = [];
+
+            // Find matching hash and username in database
+            $returned_array = sqlRequest(
+                $connection,
+                "SELECT * FROM users WHERE username = ?",
+                [$username]
+            );
+
+            // Check the user
+            if (!empty($returned_array)) {
+                $user = $returned_array[0];
+
+                if (password_verify($user_password, $user["password"])) {
+                    login();
+                    header("Location: home.php");
+                    exit();
+                }
+            }
+            
+            return "<p class='invalid-user-or-pass'>Invalid username or password entered!</p>";
+
+        } catch (\PDOException $th) {
+            die("Connection failed: " . $th->getmessage());
+        }
+    }
+
 ?>

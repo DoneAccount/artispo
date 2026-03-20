@@ -1,80 +1,3 @@
-<?php
-date_default_timezone_set("Asia/Manila");
-
-// Load uploaded posts
-$uploads = [];
-$logFile = 'uploads/log.txt';
-
-if (file_exists($logFile)) {
-    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $uploadData = json_decode($line, true);
-        if ($uploadData) {
-            $uploads[] = $uploadData;
-        }
-    }
-    // Reverse to show newest first
-    $uploads = array_reverse($uploads);
-}
-
-$currentDateTime = date('Y-m-d H:i:s');
-?>
-
-
-<!-- Posts Section with Horizontal Layout -->
-<section class="posts-section" style="padding: 20px; max-width: 1400px; margin: 0 auto;">
-    <div class="posts-header">
-        <h2>My Posts</h2>
-    </div>
-    
-    <?php if (empty($uploads)): ?>
-        <div class="no-posts-message">
-            <p>No posts yet. Click the + button to create your first post!</p>
-        </div>
-    <?php else: ?>
-        
-        <div class="posts-grid">
-                <?php foreach ($uploads as $index => $upload): ?>
-                    <div class="post-card" onclick="openModal(<?php echo $index; ?>)">
-                        <!--DELETE BUTTON-->
-                        <form method="POST" class="delete-form" onclick="event.stopPropagation()">
-                            <input type="hidden" name="filename" value="<?php echo htmlspecialchars($upload['filename']); ?>">
-                            <button type="submit" name="delete_post" class="delete-btn" onclick="return confirm('Delete this post?');">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                        <img src="uploads/<?php echo htmlspecialchars($upload['filename']); ?>" alt="Post Image" onerror="this.src='https://via.placeholder.com/600x600?text=Image+Not+Found'">
-                        <div class="horizontal-post-card-info">
-                            <p class="horizontal-post-card-caption">
-                                <?php if (!empty($upload['hashtags'])): ?>
-                            <div class="post-hashtags">
-                                <?php 
-                                    $tags = explode(",", $upload['hashtags']);
-                                    foreach ($tags as $tag):
-                                ?>
-                                    <span class="hashtag">
-                                        <?php echo htmlspecialchars(trim($tag)); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                                <?php 
-                                $caption = $upload['caption'] ?? 'No caption';
-                                // Highlight hashtags
-                                $caption = preg_replace('/#(\w+)/', '<span class="hashtag">#$1</span>', htmlspecialchars($caption));
-                                echo $caption;
-                                ?>
-                            </p>
-                        </div>
-                    </div>
-
-                <?php endforeach; ?>
-
-        </div>
-
-    <?php endif; ?>
-
-</section>
 <!-- Modal Post Details -->
 <div id="postModal" class="modal">
     <div class="modal-content">
@@ -139,7 +62,7 @@ $currentDateTime = date('Y-m-d H:i:s');
     });
 
     // Modal functions
-    function openModal(index) {
+    function openPostModal(index) {
         const post = postsData[index];
         if (!post) return;
 
@@ -320,18 +243,17 @@ $currentDateTime = date('Y-m-d H:i:s');
         backdrop-filter: blur(5px);
     }
     
-    .modal-content {
-        margin: 5% auto;
-        display: flex;
-        max-width: 1000px;
-        width: 95%;
-        background-color: #f6e7d0;
-        border-radius: 12px;
-        overflow: hidden;
-        animation: modalSlide 0.3s ease;
-        position: relative;
-    }
-    
+   .modal-content {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background-color: #f6e7d0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin: 80px auto;
+}
     @keyframes modalSlide {
         from {
             opacity: 0;
@@ -344,7 +266,7 @@ $currentDateTime = date('Y-m-d H:i:s');
     }
     
     .modal-image {
-        flex: 1.5;
+        flex: 2;
         background-color: #000;
         display: flex;
         align-items: center;
@@ -352,11 +274,13 @@ $currentDateTime = date('Y-m-d H:i:s');
         min-height: 500px;
     }
     
-    .modal-image img {
-        max-width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
-    }
+.modal-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
     
     .modal-details {
         flex: 1;

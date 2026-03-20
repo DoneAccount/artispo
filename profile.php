@@ -1,5 +1,64 @@
 <?php
-date_default_timezone_set("Asia/Manila");
+session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$username = $_SESSION['username'] ?? 'Guest'; // use session username
+
+if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] === UPLOAD_ERR_OK) {
+
+    $uploadDir = __DIR__ . "/uploads/profile_pics/";
+    
+    // Create folder if it doesn't exist
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $tmpName = $_FILES['new_profile_pic']['tmp_name'];
+    $ext = strtolower(pathinfo($_FILES['new_profile_pic']['name'], PATHINFO_EXTENSION));
+
+    $allowed = ['jpg','jpeg','png'];
+
+    if (!in_array($ext, $allowed)) {
+        echo "<script>alert('Only JPG, JPEG, PNG files are allowed.');</script>";
+    } else {
+        $newFileName = $username . '.' . $ext;
+        $destination = $uploadDir . $newFileName;
+
+        if (move_uploaded_file($tmpName, $destination)) {
+
+            // Delete old profile pics with other extensions
+            foreach ($allowed as $e) {
+                if ($e !== $ext && file_exists($uploadDir . $username . '.' . $e)) {
+                    unlink($uploadDir . $username . '.' . $e);
+                }
+            }
+
+            // Update the $profilePic path so the new image shows immediately
+            $profilePic = "uploads/profile_pics/" . $newFileName;
+
+            // Optional: refresh the page to show new profile pic
+            header("Location: profile.php");
+            exit();
+        } else {
+            echo "<script>alert('Failed to move uploaded file. Check folder permissions.');</script>";
+        }
+    }
+}
+// ----- SET PROFILE PICTURE PATH -----
+$profilePicDir = "uploads/profile_pics/";
+
+// Look for any file with the user's username
+$files = glob($profilePicDir . $username . ".*");
+
+if (!empty($files)) {
+    // Use the first match found
+    $profilePic = $files[0];
+} else {
+    // Default profile picture if none exists
+    $profilePic = "./img/profile-placeholder.png";
+}
+
 
 // Load uploaded posts
 $uploads = [];
@@ -69,17 +128,12 @@ if (file_exists($logFile)) {
 
     //Reverse to show newest first
     $uploads = array_reverse($uploads);
-
-    // INFINITE SCROLL: Only load the first 5 posts initially
-    $initialLoad = 5;
-    $uploads = array_slice($uploads, 0, $initialLoad);
-    }
-
+}
 // Load Bio
 if (file_exists($bioFile)) {
     $userBio = file_get_contents($bioFile);
 }
-
+date_default_timezone_set("Asia/Manila");
 $currentDateTime = date('Y-m-d H:i:s');
 ?>
 
@@ -343,15 +397,18 @@ $currentDateTime = date('Y-m-d H:i:s');
     <!-- Main Profile Content -->
     <main class="profile-content">
         <div class="profile-card">
-            
 
-            <i class="fas fa-bell notification"></i>
+        <div class="profile-img">
+            <form id="profilePicForm" method="POST" enctype="multipart/form-data" action="profile.php">
+                <label for="profilePicInput" style="cursor:pointer;">
+                    <img src="<?php echo $profilePic; ?>" alt="Profile Picture">
+                </label>
+                <input type="file" name="new_profile_pic" id="profilePicInput" accept="image/*" style="display:none;" onchange="this.form.submit();">
+            </form>
+        </div>
 
-            <div class="profile-img">
-                <img src="https://images.unsplash.com/photo-1690994268660-f1b243691eb6?..." alt="Profile Picture">
-            </div>
+            <h2><?php echo htmlspecialchars($username); ?></h2>
 
-            <h2>Juana Dela Cruz</h2>
 
             <!-- Bio Section -->
             <div class="bio-container">
@@ -546,7 +603,33 @@ $currentDateTime = date('Y-m-d H:i:s');
         }
 
         // Add event listener
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll);    
+        document.addEventListener("DOMContentLoaded", function () {
+            
+        const backToTopBtn = document.getElementById("backToTopBtn");
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        });
+        
+        backToTopBtn.addEventListener("click", function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    });
+
     </script>
+    
+    <!-- Back To Top Button -->
+
+<button id="backToTopBtn">
+    <i class="fas fa-arrow-up"></i> Back To Top
+</button>
+
 </body>
 </html>

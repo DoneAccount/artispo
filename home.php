@@ -13,7 +13,28 @@
         <img src="./img/Artispo_logo.png" alt="Artispo Logo">
         <h1>Artispo</h1>
     </div>
+    <nav>
+        <ul>
+            <li><a href="home.php" class="active">Home</a></li>
+
+            <!-- Dropdown for Explore -->
+            <li class="dropdown">
+                <a href="explore.php">Explore</a>
+                <ul class="dropdown-menu">
+                    <li><a href="explore.php">Mix Mode</a></li>
+                    <li><a href="exploreImages.php">Images</a></li>
+                    <li><a href="exploreVideos.php">Videos</a></li>
+                    <li><a href="exploreMaterials.php">Materials</a></li>
+                </ul>
+            </li>
+
+            <li><a href="about.php">About Us</a></li>
+            <li><a href="contact.php">Contact</a></li>
+            <li><a href="profile.php">Profile</a></li>
+        </ul>
+    </nav>
 </header>
+
 
 
     <!-- Hero Section -->

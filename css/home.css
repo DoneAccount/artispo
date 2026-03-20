@@ -16,7 +16,7 @@ body {
 /* ===================== HEADER ===================== */
 header {
     display: flex;
-    justify-content: flex-start; /* keeps logo at left */
+    justify-content: space-between;
     align-items: center;
     padding: 1.2em 4em;
     background-color: #f5e9d3;
