@@ -1,6 +1,13 @@
 <?php
 date_default_timezone_set("Asia/Manila");
 
+// Uploads should create DB rows in `posts` (not only write to uploads/log.txt)
+require_once './includes/sessions.php';
+require_once './includes/db_startup.php';
+require_login();
+
+$connection = make_db_connection("localhost", "artispo", "root", "");
+
 // Initialize variables
 $error = null;
 $success = null;
@@ -50,19 +57,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Record upload datetime
                 $upload_time = date("F d, Y - h:i A");
                 
-                // Save to log file
-                $logEntry = json_encode([
-                    'filename' => $newFileName,
-                    'datetime' => $upload_time,
-                    'caption' => $caption
-                ]);
-                file_put_contents('uploads/log.txt', $logEntry . PHP_EOL, FILE_APPEND);
-                
-                // Set success message and preview data
+            // Save post in MySQL (users uploads are tied to users._id via posts.user_id_fk)
+            $dbInserted = false;
+            try {
+                $defaultCategoryName = 'Uncategorized';
+
+                // Ensure the "Uncategorized" category exists (posts.category_id_fk is NOT NULL)
+                $stmt = $connection->prepare("SELECT _id FROM categories WHERE category_name = ? LIMIT 1");
+                $stmt->execute([$defaultCategoryName]);
+                $categoryRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$categoryRow) {
+                    $categoryId = uuidv4();
+                    $stmt = $connection->prepare("INSERT INTO categories(category_id, category_name) VALUES (?, ?)");
+                    $stmt->execute([$categoryId, $defaultCategoryName]);
+
+                    $stmt = $connection->prepare("SELECT _id FROM categories WHERE category_name = ? LIMIT 1");
+                    $stmt->execute([$defaultCategoryName]);
+                    $categoryRow = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
+
+                $categoryIdFk = (int)($categoryRow['_id'] ?? 0);
+                $userIdFk = (int)($_SESSION['user_id'] ?? 0);
+
+                if ($categoryIdFk <= 0) {
+                    throw new Exception("Default category could not be created.");
+                }
+                if ($userIdFk <= 0) {
+                    throw new Exception("Missing logged-in user_id. Please log in again.");
+                }
+
+                // `posts.title` is UNIQUE in your schema, so generate a unique title every time.
+                $baseTitle = 'Post_' . pathinfo($newFileName, PATHINFO_FILENAME) . '_' . time();
+                $title = mb_substr($baseTitle, 0, 120);
+
+                $postId = uuidv4();
+                $stmt = $connection->prepare(
+                    "INSERT INTO posts(post_id, user_id_fk, category_id_fk, title, image, description) VALUES (?, ?, ?, ?, ?, ?)"
+                );
+                $stmt->execute([$postId, $userIdFk, $categoryIdFk, $title, $newFileName, $caption]);
+
+                $dbInserted = true;
+            } catch (Exception $e) {
+                $error = "Error saving post to database: " . $e->getMessage();
+                // Avoid orphan files if DB insert fails
+                if (isset($uploadPath) && file_exists($uploadPath)) {
+                    unlink($uploadPath);
+                }
+            }
+
+            // Set success message and preview data only if DB insert succeeded
+            if ($dbInserted) {
                 $success = "Successfully uploaded!";
                 $uploadedImage = 'uploads/' . $newFileName;
                 $uploadedDatetime = $upload_time;
                 $uploadedCaption = $caption;
+            }
             } else {
                 $error = "Error: Failed to upload the file. Check folder permissions or server settings.";
             }

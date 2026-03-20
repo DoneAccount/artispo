@@ -97,6 +97,9 @@
                 $user = $returned_array[0];
 
                 if (password_verify($user_password, $user["password"])) {
+                    // Store user identity for features that need user_id_fk (e.g., uploads to posts table)
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['user_id'] = (int)$user['_id'];
                     login();
                     header("Location: home.php");
                     exit();

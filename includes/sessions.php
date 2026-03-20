@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    // Some pages include multiple files; prevent "session_start ignored" warnings.
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $logged_in = $_SESSION['logged_in'] ?? false;
 
     function login(){

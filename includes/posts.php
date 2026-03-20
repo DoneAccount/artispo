@@ -1,23 +1,45 @@
 <?php
 date_default_timezone_set("Asia/Manila");
 
-// Load uploaded posts
+// Load posts from MySQL (uploads/log.txt is legacy)
+require_once './includes/sessions.php';
+require_once './includes/db_startup.php';
+
 $uploads = [];
-$logFile = 'uploads/log.txt';
-
-if (file_exists($logFile)) {
-    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $uploadData = json_decode($line, true);
-        if ($uploadData) {
-            $uploads[] = $uploadData;
-        }
-    }
-    // Reverse to show newest first
-    $uploads = array_reverse($uploads);
-}
-
 $currentDateTime = date('Y-m-d H:i:s');
+
+$userIdFk = (int)($_SESSION['user_id'] ?? 0);
+$limit = 5; // keep in sync with infinite scroll offset logic
+$limit = (int)$limit;
+
+if ($userIdFk > 0) {
+    $connection = make_db_connection("localhost", "artispo", "root", "");
+    $offset = 0;
+
+    $stmt = $connection->prepare(
+        "SELECT post_id, image, date_posted, description
+         FROM posts
+         WHERE user_id_fk = ?
+         ORDER BY date_posted DESC, post_id DESC
+         LIMIT ? OFFSET ?"
+    );
+    $stmt->bindValue(1, $userIdFk, PDO::PARAM_INT);
+    $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(3, $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($rows as $row) {
+        $uploads[] = [
+            'post_id' => $row['post_id'],
+            'filename' => $row['image'],
+            'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),
+            'caption' => $row['description'] ?? '',
+            // Hashtags are rendered from caption text, but the UI expects this key sometimes.
+            'hashtags' => ''
+        ];
+    }
+}
 ?>
 
 
@@ -38,7 +60,7 @@ $currentDateTime = date('Y-m-d H:i:s');
                     <div class="post-card" onclick="openModal(<?php echo $index; ?>)">
                         <!--DELETE BUTTON-->
                         <form method="POST" class="delete-form" onclick="event.stopPropagation()">
-                            <input type="hidden" name="filename" value="<?php echo htmlspecialchars($upload['filename']); ?>">
+                            <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($upload['post_id']); ?>">
                             <button type="submit" name="delete_post" class="delete-btn" onclick="return confirm('Delete this post?');">
                                 <i class="fas fa-trash"></i>
                             </button>

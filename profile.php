@@ -3,6 +3,8 @@ session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+require_once './includes/db_startup.php';
+
 $username = $_SESSION['username'] ?? 'Guest'; // use session username
 
 if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] === UPLOAD_ERR_OK) {
@@ -79,35 +81,33 @@ if (isset($_POST['save_bio'])) {
 }
 
 /*------------DELETE-------------*/
-if (isset($_POST['delete_post']) && isset($_POST['filename'])) {
+if (isset($_POST['delete_post']) && isset($_POST['post_id'])) {
+    $postIdToDelete = $_POST['post_id'];
 
-    $filenameToDelete = $_POST['filename'];
-    
-    if (file_exists($logFile)) {
+    $connection = make_db_connection("localhost", "artispo", "root", "");
 
-        $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $updatedLines = [];
-        
-        foreach ($lines as $line) {
+    // Look up the stored image filename so we can delete the file from disk too.
+    $imageRows = sqlRequest(
+        $connection,
+        "SELECT image FROM posts WHERE post_id = ?",
+        [$postIdToDelete]
+    );
 
-            $uploadData = json_decode($line, true);
-            
-            if ($uploadData && $uploadData['filename'] !== $filenameToDelete) {
-                $updatedLines[] = $line;
-            }
+    if (!empty($imageRows) && !empty($imageRows[0]['image'])) {
+        $filenameToDelete = $imageRows[0]['image'];
+        $imagePath = 'uploads/' . $filenameToDelete;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
         }
-        
-        // Write updated lines back to file
-        file_put_contents($logFile, implode(PHP_EOL, $updatedLines) . PHP_EOL);
     }
-    
-    // Delete actual image file
-    $imagePath = 'uploads/' . $filenameToDelete;
 
-    if (file_exists($imagePath)) {
-        unlink($imagePath);
-    }
-    
+    // Delete the DB row (FK constraints should handle related rows if/when enabled)
+    sqlRequest(
+        $connection,
+        "DELETE FROM posts WHERE post_id = ?",
+        [$postIdToDelete]
+    );
+
     // Redirect to prevent form resubmission
     header("Location: profile.php");
     exit();

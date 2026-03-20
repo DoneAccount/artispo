@@ -32,6 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   if (empty($errors_array)) {
     register($connection, $username, $email, password_hash($password, PASSWORD_ARGON2ID));
+
+    // Store user identity so uploads/posts can reference users._id (user_id_fk)
+    $createdUser = sqlRequest(
+      $connection,
+      "SELECT _id FROM users WHERE username = ?",
+      [$username]
+    );
+    if (!empty($createdUser)) {
+      $_SESSION['username'] = $username;
+      $_SESSION['user_id'] = (int)$createdUser[0]['_id'];
+    }
+
     login();
     header("Location: home.php");
   }

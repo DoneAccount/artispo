@@ -1,24 +1,26 @@
 <?php
-/* ---------------- ADDED: LOAD POSTS FROM LOG FILE FOR EXPLORE PAGE ---------------- */
+/* ---------------- ADDED: LOAD POSTS FROM MySQL FOR EXPLORE PAGE ---------------- */
+require_once './includes/db_startup.php';
 
 $uploads = [];
-$logFile = 'uploads/log.txt';
+$connection = make_db_connection("localhost", "artispo", "root", "");
 
-if (file_exists($logFile)) {
+$stmt = $connection->prepare(
+    "SELECT post_id, image, date_posted, description
+     FROM posts
+     ORDER BY date_posted DESC, post_id DESC"
+);
+$stmt->execute();
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-    foreach ($lines as $line) {
-
-        $uploadData = json_decode($line, true);
-
-        if ($uploadData) {
-            $uploads[] = $uploadData;
-        }
-    }
-
-    // Show newest first
-    $uploads = array_reverse($uploads);
+foreach ($rows as $row) {
+    $uploads[] = [
+        'post_id' => $row['post_id'],
+        'filename' => $row['image'],
+        'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),
+        'caption' => $row['description'] ?? '',
+        'hashtags' => ''
+    ];
 }
 
 /* ---------------- ADDED: FILTER SYSTEM ---------------- */
