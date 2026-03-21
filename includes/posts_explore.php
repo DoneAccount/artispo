@@ -8,10 +8,10 @@
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <div class="modal-user">
                 <div class="profile-img-small">
-                    <img src="https://images.unsplash.com/photo-1690994268660-f1b243691eb6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=736" alt="Profile">
+                    <img id="modalUserProfilePicExplore" src="./img/profile-placeholder.png" alt="Profile">
                 </div>
                 <div class="modal-user-info">
-                    <h3>Juana Dela Cruz</h3>
+                    <h3 id="modalUsernameExplore">Unknown User</h3>
                     <span id="modalDateTime"></span>
                 </div>
             </div>
@@ -43,6 +43,8 @@
              data-filename="<?php echo htmlspecialchars($upload['filename']); ?>"
              data-datetime="<?php echo htmlspecialchars($upload['datetime']); ?>"
              data-caption="<?php echo htmlspecialchars($upload['caption'] ?? ''); ?>"
+             data-username="<?php echo htmlspecialchars($upload['username'] ?? 'Unknown User'); ?>"
+             data-profile-pic="<?php echo htmlspecialchars($upload['profile_pic'] ?? './img/profile-placeholder.png'); ?>"
              data-hashtags="<?php echo htmlspecialchars($upload['hashtags'] ?? ''); ?>">
         </div>
     <?php endforeach; ?>
@@ -57,6 +59,8 @@
             filename: post.dataset.filename,
             datetime: post.dataset.datetime,
             caption: post.dataset.caption,
+            username: post.dataset.username,
+            profilePic: post.dataset.profilePic,
             hashtags: post.dataset.hashtags
         });
     });
@@ -71,10 +75,14 @@
         const modalDateTime = document.getElementById('modalDateTime');
         const modalDateTimeFull = document.getElementById('modalDateTimeFull');
         const modalCaption = document.getElementById('modalCaption');
+        const modalUsername = document.getElementById('modalUsernameExplore');
+        const modalUserProfilePic = document.getElementById('modalUserProfilePicExplore');
 
         modalImage.src = 'uploads/' + post.filename;
         modalDateTime.textContent = post.datetime;
         modalDateTimeFull.textContent = post.datetime;
+        modalUsername.textContent = post.username || 'Unknown User';
+        modalUserProfilePic.src = post.profilePic || './img/profile-placeholder.png';
         
         let captionText = post.caption || '<i>No caption</i>';
         captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');

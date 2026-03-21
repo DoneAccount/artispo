@@ -6,19 +6,28 @@ $uploads = [];
 $connection = make_db_connection("localhost", "artispo", "root", "");
 
 $stmt = $connection->prepare(
-    "SELECT post_id, image, date_posted, description
-     FROM posts
-     ORDER BY date_posted DESC, post_id DESC"
+    "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+     FROM posts p
+     INNER JOIN users u ON u._id = p.user_id_fk
+     ORDER BY p.date_posted DESC, p.post_id DESC"
 );
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($rows as $row) {
+    $profilePic = "./img/profile-placeholder.png";
+    $matches = glob("uploads/profile_pics/" . $row['username'] . ".*");
+    if (!empty($matches)) {
+        $profilePic = $matches[0];
+    }
+
     $uploads[] = [
         'post_id' => $row['post_id'],
         'filename' => $row['image'],
         'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),
         'caption' => $row['description'] ?? '',
+        'username' => $row['username'],
+        'profile_pic' => $profilePic,
         'hashtags' => ''
     ];
 }

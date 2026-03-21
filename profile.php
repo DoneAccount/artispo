@@ -573,7 +573,9 @@ $currentDateTime = date('Y-m-d H:i:s');
                                 postsData.push({
                                     filename: post.dataset.filename,
                                     datetime: post.dataset.datetime,
-                                    caption: post.dataset.caption
+                                    caption: post.dataset.caption,
+                                    username: post.dataset.username,
+                                    profilePic: post.dataset.profilePic
                                 });
                             }
                         });

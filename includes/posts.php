@@ -17,10 +17,11 @@ if ($userIdFk > 0) {
     $offset = 0;
 
     $stmt = $connection->prepare(
-        "SELECT post_id, image, date_posted, description
-         FROM posts
+        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+         FROM posts p
+         INNER JOIN users u ON u._id = p.user_id_fk
          WHERE user_id_fk = ?
-         ORDER BY date_posted DESC, post_id DESC
+         ORDER BY p.date_posted DESC, p.post_id DESC
          LIMIT ? OFFSET ?"
     );
     $stmt->bindValue(1, $userIdFk, PDO::PARAM_INT);
@@ -30,11 +31,19 @@ if ($userIdFk > 0) {
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($rows as $row) {
+        $profilePic = "./img/profile-placeholder.png";
+        $matches = glob("uploads/profile_pics/" . $row['username'] . ".*");
+        if (!empty($matches)) {
+            $profilePic = $matches[0];
+        }
+
         $uploads[] = [
             'post_id' => $row['post_id'],
             'filename' => $row['image'],
             'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),
             'caption' => $row['description'] ?? '',
+            'username' => $row['username'],
+            'profile_pic' => $profilePic,
             // Hashtags are rendered from caption text, but the UI expects this key sometimes.
             'hashtags' => ''
         ];
@@ -107,10 +116,10 @@ if ($userIdFk > 0) {
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <div class="modal-user">
                 <div class="profile-img-small">
-                    <img src="https://images.unsplash.com/photo-1690994268660-f1b243691eb6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=736" alt="Profile">
+                    <img id="modalUserProfilePic" src="./img/profile-placeholder.png" alt="Profile">
                 </div>
                 <div class="modal-user-info">
-                    <h3>Juana Dela Cruz</h3>
+                    <h3 id="modalUsername">Unknown User</h3>
                     <span id="modalDateTime"></span>
                 </div>
             </div>
@@ -142,6 +151,8 @@ if ($userIdFk > 0) {
              data-filename="<?php echo htmlspecialchars($upload['filename']); ?>"
              data-datetime="<?php echo htmlspecialchars($upload['datetime']); ?>"
              data-caption="<?php echo htmlspecialchars($upload['caption'] ?? ''); ?>"
+             data-username="<?php echo htmlspecialchars($upload['username'] ?? 'Unknown User'); ?>"
+             data-profile-pic="<?php echo htmlspecialchars($upload['profile_pic'] ?? './img/profile-placeholder.png'); ?>"
              data-hashtags="<?php echo htmlspecialchars($upload['hashtags'] ?? ''); ?>">
         </div>
     <?php endforeach; ?>
@@ -156,6 +167,8 @@ if ($userIdFk > 0) {
             filename: post.dataset.filename,
             datetime: post.dataset.datetime,
             caption: post.dataset.caption,
+            username: post.dataset.username,
+            profilePic: post.dataset.profilePic,
             hashtags: post.dataset.hashtags
         });
     });
@@ -170,10 +183,14 @@ if ($userIdFk > 0) {
         const modalDateTime = document.getElementById('modalDateTime');
         const modalDateTimeFull = document.getElementById('modalDateTimeFull');
         const modalCaption = document.getElementById('modalCaption');
+        const modalUsername = document.getElementById('modalUsername');
+        const modalUserProfilePic = document.getElementById('modalUserProfilePic');
 
         modalImage.src = 'uploads/' + post.filename;
         modalDateTime.textContent = post.datetime;
         modalDateTimeFull.textContent = post.datetime;
+        modalUsername.textContent = post.username || 'Unknown User';
+        modalUserProfilePic.src = post.profilePic || './img/profile-placeholder.png';
         
         let captionText = post.caption || '<i>No caption</i>';
         captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');

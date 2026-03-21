@@ -29,10 +29,11 @@ if ($userIdFk > 0) {
 
     // Page slice
     $stmt = $connection->prepare(
-        "SELECT post_id, image, date_posted, description
-         FROM posts
+        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+         FROM posts p
+         INNER JOIN users u ON u._id = p.user_id_fk
          WHERE user_id_fk = ?
-         ORDER BY date_posted DESC, post_id DESC
+         ORDER BY p.date_posted DESC, p.post_id DESC
          LIMIT ? OFFSET ?"
     );
     $stmt->bindValue(1, $userIdFk, PDO::PARAM_INT);
@@ -47,6 +48,12 @@ if ($userIdFk > 0) {
         $filename = $post['image'];
         $datetime = date("F d, Y - h:i A", strtotime($post['date_posted']));
         $caption = $post['description'] ?? '';
+        $username = $post['username'] ?? 'Unknown User';
+        $profilePic = "./img/profile-placeholder.png";
+        $matches = glob("uploads/profile_pics/" . $username . ".*");
+        if (!empty($matches)) {
+            $profilePic = $matches[0];
+        }
 
         // --- POST CARD HTML ---
         $postsHtml .= '<div class="post-card" onclick="openModal(' . ($offset + $index) . ')">';
@@ -71,7 +78,9 @@ if ($userIdFk > 0) {
         $dataHtml .= '<div class="post-data" ';
         $dataHtml .= 'data-filename="' . htmlspecialchars($filename) . '" ';
         $dataHtml .= 'data-datetime="' . htmlspecialchars($datetime) . '" ';
-        $dataHtml .= 'data-caption="' . htmlspecialchars($caption) . '">';
+        $dataHtml .= 'data-caption="' . htmlspecialchars($caption) . '" ';
+        $dataHtml .= 'data-username="' . htmlspecialchars($username) . '" ';
+        $dataHtml .= 'data-profile-pic="' . htmlspecialchars($profilePic) . '">';
         $dataHtml .= '</div>';
     }
 }
