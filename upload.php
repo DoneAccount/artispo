@@ -19,6 +19,7 @@ $uploadedCaption = null;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //For Caption
     $caption = trim($_POST['caption'] ?? '');
+    $hashtags = $_POST['hashtags'] ?? '';
     //Max 5MB
     $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     $maxSize = 5 * 1024 * 1024; // 5MB in bytes
@@ -190,6 +191,16 @@ $currentDateTime = date('Y-m-d H:i:s');
                 <input type="file" id="imageUpload" name="image" accept=".png,.jpg,.jpeg" required>
                 <textarea name="caption" class="caption-input" placeholder="Write a caption..." rows="3"></textarea>
 
+                        <!-- Hashtag Chips Field -->
+            <div class="hashtag-wrapper">
+                <div id="tagContainer" class="tag-container">
+                    <input type="text" id="hashtagInput" placeholder="Type your hashtag here...">
+                </div>
+            </div>
+
+            <!-- Hidden input to send hashtags to PHP -->
+            <input type="hidden" name="hashtags" id="hashtagsInput">
+
                 <button type="submit" id="uploadButton">Upload Image</button>
             </form>
             <?php endif; ?>
@@ -348,6 +359,56 @@ $currentDateTime = date('Y-m-d H:i:s');
                     imageInput.files = dataTransfer.files;
                 }
             });
+        });
+
+                // Hashtag Chips Logic
+        const hashtagInput = document.getElementById("hashtagInput");
+        const tagContainer = document.getElementById("tagContainer");
+        const hashtagsInput = document.getElementById("hashtagsInput");
+
+        let tags = [];
+
+        hashtagInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+
+                let value = hashtagInput.value.trim();
+
+                if (value !== "") {
+                    if (!value.startsWith("#")) {
+                        value = "#" + value;
+                    }
+
+                    tags.push(value);
+                    updateTags();
+                    hashtagInput.value = "";
+                }
+            }
+        });
+
+        function updateTags() {
+            // Remove old chips
+            const existingChips = document.querySelectorAll(".tag-chip");
+            existingChips.forEach(chip => chip.remove());
+
+            tags.forEach((tag, index) => {
+                const chip = document.createElement("span");
+                chip.className = "tag-chip";
+                chip.innerHTML = tag + ' <span class="remove-tag" data-index="'+index+'">×</span>';
+
+                tagContainer.insertBefore(chip, hashtagInput);
+            });
+
+            hashtagsInput.value = tags.join(",");
+        }
+
+        // Remove tag
+        tagContainer.addEventListener("click", function(e) {
+            if (e.target.classList.contains("remove-tag")) {
+                const index = e.target.getAttribute("data-index");
+                tags.splice(index, 1);
+                updateTags();
+            }
         });
     </script>
 </body>
