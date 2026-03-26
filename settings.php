@@ -1,5 +1,9 @@
 <?php
 require_once './includes/sessions.php';
+require_once './includes/db_startup.php';
+
+$username = $_SESSION['username'] ?? 'Guest';
+$connection = make_db_connection("localhost", "artispo", "root", "");
 
 // Handle logout
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout_btn'])) {
@@ -8,7 +12,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout_btn'])) {
     exit;
 }
 
-$username = $_SESSION['username'] ?? 'Guest';
+// Handle profile picture upload
+if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = __DIR__ . "/uploads/profile_pics/";
+    
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $tmpName = $_FILES['new_profile_pic']['tmp_name'];
+    $ext = strtolower(pathinfo($_FILES['new_profile_pic']['name'], PATHINFO_EXTENSION));
+    $allowed = ['jpg','jpeg','png'];
+
+    if (!in_array($ext, $allowed)) {
+        echo "<script>alert('Only JPG, JPEG, PNG files are allowed.');</script>";
+    } else {
+        $newFileName = $username . '.' . $ext;
+        $destination = $uploadDir . $newFileName;
+
+        if (move_uploaded_file($tmpName, $destination)) {
+            foreach ($allowed as $e) {
+                if ($e !== $ext && file_exists($uploadDir . $username . '.' . $e)) {
+                    unlink($uploadDir . $username . '.' . $e);
+                }
+            }
+
+            $stmt = $connection->prepare("UPDATE users SET profile_picture = ? WHERE username = ?");
+            $stmt->execute([$newFileName, $username]);
+
+            header("Location: settings.php");
+            exit();
+        } else {
+            echo "<script>alert('Failed to move uploaded file. Check folder permissions.');</script>";
+        }
+    }
+}
+
+// Handle bio save
+if (isset($_POST['save_bio'])) {
+    $newBio = $_POST['bio_content'];
+    $stmt = $connection->prepare("UPDATE users SET bio = ? WHERE username = ?");
+    $stmt->execute([$newBio, $username]);
+
+    header("Location: settings.php");
+    exit();
+}
+
+// Get user profile picture and bio from database
+$stmt = $connection->prepare("SELECT profile_picture, bio FROM users WHERE username = ?");
+$stmt->execute([$username]);
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$userBio = $userData['bio'] ?? "";
+$dbProfilePic = $userData['profile_picture'] ?? "";
+
+if (!empty($dbProfilePic)) {
+    $profilePic = "uploads/profile_pics/" . $dbProfilePic;
+} else {
+    $profilePic = "./img/profile-placeholder.png";
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,28 +107,62 @@ $username = $_SESSION['username'] ?? 'Guest';
   <main class="profile-content">
     <div class="profile-card">
       <h2>Settings</h2>
-      <p style="color:#ddd; margin-bottom: 35px;">
+      <p class="username-info">
         Signed in as <strong><?php echo htmlspecialchars($username); ?></strong>
       </p>
 
-      <div style="text-align:left; max-width: 900px; margin: 0 auto;">
-        <p style="color:#f6e7d0; margin-bottom: 18px;">Settings coming soon.</p>
+      <div class="settings-container">
+        <p class="settings-coming-soon">Settings coming soon.</p>
 
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px;">
-          <li style="background:#2f2f39; padding: 14px 16px; border-radius: 10px;">
+        <ul class="settings-list">
+          <li class="settings-item">
             <strong>Profile</strong>
-            <div style="color:#aaa; font-size: 0.95rem; margin-top: 6px;">Update display name, bio, and profile picture.</div>
+            <div class="settings-item-description">Update display name, bio, and profile picture.</div>
+            
+            <!-- Profile Picture Section -->
+            <div class="profile-settings-section">
+              <div class="profile-pic-container">
+                <form id="profilePicForm" method="POST" enctype="multipart/form-data" action="settings.php">
+                  <label for="profilePicInput" class="profile-pic-label">
+                    <img src="<?php echo htmlspecialchars($profilePic); ?>" alt="Profile Picture" class="profile-pic-preview">
+                  </label>
+                  <input type="file" name="new_profile_pic" id="profilePicInput" accept="image/*" class="profile-pic-input" onchange="this.form.submit();">
+                </form>
+                <p class="profile-pic-hint">Click to change profile picture</p>
+              </div>
+            </div>
+
+            <!-- Bio Section -->
+            <div class="bio-settings-section">
+              <h4 class="bio-label">Bio</h4>
+              
+              <!-- Display Mode -->
+              <div class="bio-display" id="bioDisplay">
+                <?php if (!empty($userBio)): ?>
+                  <p class="bio-text"><?php echo htmlspecialchars($userBio); ?></p>
+                  <button class="edit-bio-btn" onclick="toggleBioEdit()">Edit</button>
+                <?php else: ?>
+                  <p class="no-bio">No bio yet. Click to add one!</p>
+                  <button class="edit-bio-btn" onclick="toggleBioEdit()">Add Bio</button>
+                <?php endif; ?>
+              </div>
+
+              <!-- Edit Mode -->
+              <form class="bio-edit-form" id="bioEditForm" method="POST" action="settings.php">
+                <textarea name="bio_content" placeholder="Write something about yourself..." class="bio-textarea"><?php echo htmlspecialchars($userBio); ?></textarea>
+                <div class="bio-form-buttons">
+                  <button type="submit" name="save_bio" class="bio-save-btn">Save</button>
+                  <button type="button" class="bio-cancel-btn" onclick="toggleBioEdit()">Cancel</button>
+                </div>
+              </form>
+            </div>
           </li>
-          <li style="background:#2f2f39; padding: 14px 16px; border-radius: 10px;">
+          <li class="settings-item">
             <strong>Security</strong>
-            <div style="color:#aaa; font-size: 0.95rem; margin-top: 6px;">Change password and manage login options.</div>
-            <form method="POST" style="display: inline-block; margin-top: 12px;">
-              <button type="submit" name="logout_btn" style="padding: 8px 16px; background-color: #ff4757; color: white; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background-color 0.3s;">Logout</button>
+            <div class="settings-item-description">Change password and manage login options.</div>
+            <form method="POST" class="logout-form">
+              <button type="submit" name="logout_btn" class="logout-btn">Logout</button>
             </form>
-          </li>
-          <li style="background:#2f2f39; padding: 14px 16px; border-radius: 10px;">
-            <strong>Privacy</strong>
-            <div style="color:#aaa; font-size: 0.95rem; margin-top: 6px;">Control who can see your posts and contact you.</div>
           </li>
         </ul>
       </div>
@@ -122,5 +218,20 @@ $username = $_SESSION['username'] ?? 'Guest';
       </div>
     </div>
   </footer>
+
+  <script>
+    function toggleBioEdit() {
+      var displayDiv = document.getElementById('bioDisplay');
+      var editForm = document.getElementById('bioEditForm');
+
+      if (displayDiv.style.display === 'none') {
+        displayDiv.style.display = 'flex';
+        editForm.style.display = 'none';
+      } else {
+        displayDiv.style.display = 'none';
+        editForm.style.display = 'flex';
+      }
+    }
+  </script>
 </body>
 </html>
