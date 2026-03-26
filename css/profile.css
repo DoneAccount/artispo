@@ -106,11 +106,16 @@ body {
   object-fit: contain;
   margin-bottom: 15px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sidebar .icon img:hover {
   transform: scale(1.1); /* small zoom on hover */
+}
+
+.sidebar .icon.active img {
+  filter: drop-shadow(0 0 10px #ffff00) drop-shadow(0 0 6px #ffff00);
+  transform: scale(1.15);
 }
 /* ---------- Main ---------- */
 

@@ -1,4 +1,41 @@
 
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 60px;
+      background-color: #e27b2d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 270px;
+      gap: 20px;
+      min-height: 100vh;
+    }
+
+    .sidebar .icon {
+      transition: filter 0.2s ease;
+    }
+
+    .sidebar .icon img {
+      width: 35px;
+      height: 35px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .sidebar .icon img:hover {
+      transform: scale(1.1);
+    }
+
+    .sidebar .icon.active img {
+      filter: drop-shadow(0 0 10px #ffff00) drop-shadow(0 0 6px #ffff00);
+      transform: scale(1.15);
+    }
+
     /*Upload styles*/
 
     .upload-container {

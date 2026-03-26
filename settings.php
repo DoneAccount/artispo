@@ -100,7 +100,7 @@ if (!empty($dbProfilePic)) {
     <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
     <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
     <a href="home.php" class="icon"><img src="./img/Home.png" alt="Home"></a>
-    <a href="settings.php" class="icon"><img src="./img/Settings.png" alt="Settings"></a>
+    <a href="settings.php" class="icon active"><img src="./img/Settings.png" alt="Settings"></a>
   </aside>
 
   <!-- Main Settings Content -->

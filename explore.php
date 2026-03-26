@@ -54,7 +54,7 @@ $filter = $_GET['filter'] ?? 'all';
 
   <!-- Sidebar -->
 <aside class="sidebar">
-  <a href="explore.php" class="icon">
+  <a href="explore.php" class="icon active">
     <img src="./img/Compass.png" alt="Compass">
   </a>
   <!-- TODO: hrefs should point to GET query parameters -->
