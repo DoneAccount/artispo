@@ -17,7 +17,7 @@ if ($userIdFk > 0) {
     $offset = 0;
 
     $stmt = $connection->prepare(
-        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username, u.profile_picture
          FROM posts p
          INNER JOIN users u ON u._id = p.user_id_fk
          WHERE user_id_fk = ?
@@ -31,11 +31,7 @@ if ($userIdFk > 0) {
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($rows as $row) {
-        $profilePic = "./img/profile-placeholder.png";
-        $matches = glob("uploads/profile_pics/" . $row['username'] . ".*");
-        if (!empty($matches)) {
-            $profilePic = $matches[0];
-        }
+        $profilePic = !empty($row['profile_picture']) ? "uploads/profile_pics/" . $row['profile_picture'] : "./img/profile-placeholder.png";
 
         $uploads[] = [
             'post_id' => $row['post_id'],

@@ -177,7 +177,7 @@
   <li>
     <a href="profile.php">Profile</a>
     <ul class="sub-links">
-      <li><a href="#">Settings</a></li>
+          <li><a href="settings.php">Settings</a></li>
     </ul>
   </li>
 </ul>

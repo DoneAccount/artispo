@@ -150,7 +150,7 @@
           <li><a href="contact.php">Contact</a></li>
           <li><a href="profile.php">Profile</a></li>
           <ul class="sub-links">
-            <li><a href="#">Settings</a></li>
+            <li><a href="settings.php">Settings</a></li>
           </ul>
         </ul>
       </div>

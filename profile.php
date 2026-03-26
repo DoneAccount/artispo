@@ -5,6 +5,8 @@ error_reporting(E_ALL);
 
 require_once './includes/db_startup.php';
 
+$connection = make_db_connection("localhost", "artispo", "root", "");
+
 $username = $_SESSION['username'] ?? 'Guest'; // use session username
 
 if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] === UPLOAD_ERR_OK) {
@@ -36,6 +38,10 @@ if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] ===
                 }
             }
 
+            // Update database with the new filename
+            $stmt = $connection->prepare("UPDATE users SET profile_picture = ? WHERE username = ?");
+            $stmt->execute([$newFileName, $username]);
+
             // Update the $profilePic path so the new image shows immediately
             $profilePic = "uploads/profile_pics/" . $newFileName;
 
@@ -48,34 +54,30 @@ if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] ===
     }
 }
 // ----- SET PROFILE PICTURE PATH -----
-$profilePicDir = "uploads/profile_pics/";
+$stmt = $connection->prepare("SELECT profile_picture, bio FROM users WHERE username = ?");
+$stmt->execute([$username]);
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Look for any file with the user's username
-$files = glob($profilePicDir . $username . ".*");
+$userBio = $userData['bio'] ?? "";
+$dbProfilePic = $userData['profile_picture'] ?? "";
 
-if (!empty($files)) {
-    // Use the first match found
-    $profilePic = $files[0];
+if (!empty($dbProfilePic)) {
+    $profilePic = "uploads/profile_pics/" . $dbProfilePic;
 } else {
-    // Default profile picture if none exists
     $profilePic = "./img/profile-placeholder.png";
 }
-
 
 // Load uploaded posts
 $uploads = [];
 $logFile = 'uploads/log.txt';
 
-// Bio File Path
-$bioFile = 'uploads/bio.txt';
-$userBio = "";
-
 /*------------SAVE BIO-------------*/
 if (isset($_POST['save_bio'])) {
     $newBio = $_POST['bio_content'];
-    // Save bio to file
-    file_put_contents($bioFile, $newBio);
-    // Redirect to prevent form resubmission
+    
+    $stmt = $connection->prepare("UPDATE users SET bio = ? WHERE username = ?");
+    $stmt->execute([$newBio, $username]);
+
     header("Location: profile.php");
     exit();
 }
@@ -83,8 +85,6 @@ if (isset($_POST['save_bio'])) {
 /*------------DELETE-------------*/
 if (isset($_POST['delete_post']) && isset($_POST['post_id'])) {
     $postIdToDelete = $_POST['post_id'];
-
-    $connection = make_db_connection("localhost", "artispo", "root", "");
 
     // Look up the stored image filename so we can delete the file from disk too.
     $imageRows = sqlRequest(
@@ -128,10 +128,6 @@ if (file_exists($logFile)) {
 
     //Reverse to show newest first
     $uploads = array_reverse($uploads);
-}
-// Load Bio
-if (file_exists($bioFile)) {
-    $userBio = file_get_contents($bioFile);
 }
 date_default_timezone_set("Asia/Manila");
 $currentDateTime = date('Y-m-d H:i:s');
@@ -391,7 +387,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
         <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
         <div class="icon"><img src="./img/Home.png" alt="Home"></div>
-        <div class="icon"><img src="./img/Settings.png" alt="Settings"></div>
+        <a href="settings.php" class="icon"><img src="./img/Settings.png" alt="Settings"></a>
     </aside>
 
     <!-- Main Profile Content -->
@@ -521,7 +517,7 @@ $currentDateTime = date('Y-m-d H:i:s');
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="profile.php">Profile</a></li>
                     <ul class="sub-links">
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="settings.php">Settings</a></li>
                     </ul>
                 </ul>
             </div>

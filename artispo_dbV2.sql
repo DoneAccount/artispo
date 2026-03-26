@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2026 at 02:56 PM
+-- Generation Time: Mar 26, 2026 at 08:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,13 @@ CREATE TABLE `categories` (
   `category_id` varchar(36) NOT NULL,
   `category_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`_id`, `category_id`, `category_name`) VALUES
+(1, 'fc66b722-b4cc-4c7c-b6d6-92fe52880152', 'Uncategorized');
 
 -- --------------------------------------------------------
 
@@ -80,6 +87,13 @@ CREATE TABLE `posts` (
   `description` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`_id`, `post_id`, `user_id_fk`, `category_id_fk`, `date_posted`, `title`, `image`, `likes`, `description`) VALUES
+(1, 'e785b69b-5782-4ebd-a82a-69e41cbabd99', 2, 1, '2026-03-20 16:18:09', 'Post_upload_69bd02c172afb5.86521389_1773994689', 'upload_69bd02c172afb5.86521389.jpg', 0, 'Bag of bagasse');
+
 -- --------------------------------------------------------
 
 --
@@ -102,15 +116,19 @@ CREATE TABLE `users` (
   `user_id` varchar(36) NOT NULL,
   `username` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `bio` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`_id`, `user_id`, `username`, `email`, `password`) VALUES
-(1, '4cb09499-44ad-46eb-b09a-2a1965f84e43', 'novus', 'novus@email.com', '$argon2id$v=19$m=65536,t=4,p=1$Vm5HL3ppQXUubkd4RDNYVA$Gx0YQ8PY5TGd3AyLD4AzGwdNDVVyCC3fFO9joJ0iXZo');
+INSERT INTO `users` (`_id`, `user_id`, `username`, `email`, `password`, `profile_picture`, `bio`) VALUES
+(1, '4cb09499-44ad-46eb-b09a-2a1965f84e43', 'novus', 'novus@email.com', '$argon2id$v=19$m=65536,t=4,p=1$Vm5HL3ppQXUubkd4RDNYVA$Gx0YQ8PY5TGd3AyLD4AzGwdNDVVyCC3fFO9joJ0iXZo', NULL, NULL),
+(2, '45d816e4-ce1e-4eef-9fca-9b802ee16c17', 'hello', 'hello@email.com', '$argon2id$v=19$m=65536,t=4,p=1$SmJvTmlJYklNbXZpUnFTag$MKk/bqG4g0NLXPT/nRLH4kYgUXQrn/xe0sc+XGHil08', NULL, NULL),
+(3, '5550dd25-4134-408b-97b2-fed2fa3c7590', 'hallu', 'hallu@email.com', '$argon2id$v=19$m=65536,t=4,p=1$UWZVMXN1Y0xGU1dFU255Sg$p7bIFIp7I7W3qVrA5G8Xpncs68LFmf5bcO2531bC1KU', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -175,7 +193,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -193,13 +211,13 @@ ALTER TABLE `hashtags`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

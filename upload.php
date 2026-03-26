@@ -162,7 +162,7 @@ $currentDateTime = date('Y-m-d H:i:s');
         <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
         <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
         <div class="icon"><img src="./img/Home.png" alt="Home"></div>
-        <div class="icon"><img src="./img/Settings.png" alt="Settings"></div>
+        <a href="settings.php" class="icon"><img src="./img/Settings.png" alt="Settings"></a>
     </aside>
 
     <main class="profile-content">
@@ -259,7 +259,7 @@ $currentDateTime = date('Y-m-d H:i:s');
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="profile.php">Profile</a></li>
                     <ul class="sub-links">
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="settings.php">Settings</a></li>
                     </ul>
                 </ul>
             </div>

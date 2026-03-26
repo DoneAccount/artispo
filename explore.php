@@ -6,7 +6,7 @@ $uploads = [];
 $connection = make_db_connection("localhost", "artispo", "root", "");
 
 $stmt = $connection->prepare(
-    "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+    "SELECT p.post_id, p.image, p.date_posted, p.description, u.username, u.profile_picture
      FROM posts p
      INNER JOIN users u ON u._id = p.user_id_fk
      ORDER BY p.date_posted DESC, p.post_id DESC"
@@ -15,11 +15,7 @@ $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($rows as $row) {
-    $profilePic = "./img/profile-placeholder.png";
-    $matches = glob("uploads/profile_pics/" . $row['username'] . ".*");
-    if (!empty($matches)) {
-        $profilePic = $matches[0];
-    }
+    $profilePic = !empty($row['profile_picture']) ? "uploads/profile_pics/" . $row['profile_picture'] : "./img/profile-placeholder.png";
 
     $uploads[] = [
         'post_id' => $row['post_id'],
@@ -77,7 +73,7 @@ $filter = $_GET['filter'] ?? 'all';
   <a href="index.php" class="icon">
     <img src="./img/Home.png" alt="Home">
   </a>
-  <a href="" class="icon">
+  <a href="settings.php" class="icon">
     <img src="./img/Settings.png" alt="Settings">
   </a>
 </aside>
