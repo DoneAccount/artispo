@@ -70,7 +70,7 @@ $filter = $_GET['filter'] ?? 'all';
   <a href="explore.php?filter=art" class="icon">
     <img src="./img/paint-brush-icon.png" alt="Art">
   </a>
-  <a href="index.php" class="icon">
+  <a href="home.php" class="icon">
     <img src="./img/Home.png" alt="Home">
   </a>
   <a href="settings.php" class="icon">

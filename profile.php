@@ -382,11 +382,11 @@ $currentDateTime = date('Y-m-d H:i:s');
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <div class="icon"><img src="./img/Compass.png" alt="Compass"></div>
+        <a href="explore.php" class="icon"><img src="./img/Compass.png" alt="Compass"></a>
         <div class="icon"><img src="./img/Gallery.png" alt="Gallery"></div>
         <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
         <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
-        <div class="icon"><img src="./img/Home.png" alt="Home"></div>
+        <a href="home.php" class="icon"><img src="./img/Home.png" alt="Home"></a>
         <a href="settings.php" class="icon"><img src="./img/Settings.png" alt="Settings"></a>
     </aside>
 
