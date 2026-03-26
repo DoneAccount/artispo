@@ -96,7 +96,7 @@ nav ul li a:hover {
 
 .search-icon {
     position: absolute;
-    left: 400px; /* move icon to the left inside the input */
+    left: 730px; /* move icon to the left inside the input */
     top: 50%; /* vertically center */
     transform: translateY(-50%);
     background-color: transparent;
