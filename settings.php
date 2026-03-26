@@ -81,13 +81,13 @@ if (!empty($dbProfilePic)) {
   <title>Artispo | Settings</title>
   <link rel="stylesheet" href="./css/settings.css">
   <link rel="stylesheet" href="./css/profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
   <!-- Top Navigation -->
   <header class="top-nav">
     <div class="nav-content">
-      <a href="profile.php" class="back-button">← Back</a>
       <div class="logo">
         <img src="./img/Artispo_logo_long.png" alt="Artispo Logo">
       </div>
@@ -107,6 +107,7 @@ if (!empty($dbProfilePic)) {
   <!-- Main Settings Content -->
   <main class="profile-content">
     <div class="profile-card">
+      <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="fas fa-chevron-left"></i></a>
       <h2>Settings</h2>
       <p class="username-info">
         Signed in as <strong><?php echo htmlspecialchars($username); ?></strong>
