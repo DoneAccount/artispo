@@ -1,6 +1,13 @@
 <?php
 require_once './includes/sessions.php';
 
+// Handle logout
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout_btn'])) {
+    logout();
+    header('Location: login.php');
+    exit;
+}
+
 $username = $_SESSION['username'] ?? 'Guest';
 ?>
 
@@ -53,6 +60,9 @@ $username = $_SESSION['username'] ?? 'Guest';
           <li style="background:#2f2f39; padding: 14px 16px; border-radius: 10px;">
             <strong>Security</strong>
             <div style="color:#aaa; font-size: 0.95rem; margin-top: 6px;">Change password and manage login options.</div>
+            <form method="POST" style="display: inline-block; margin-top: 12px;">
+              <button type="submit" name="logout_btn" style="padding: 8px 16px; background-color: #ff4757; color: white; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background-color 0.3s;">Logout</button>
+            </form>
           </li>
           <li style="background:#2f2f39; padding: 14px 16px; border-radius: 10px;">
             <strong>Privacy</strong>
