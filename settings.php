@@ -87,6 +87,7 @@ if (!empty($dbProfilePic)) {
   <!-- Top Navigation -->
   <header class="top-nav">
     <div class="nav-content">
+      <a href="profile.php" class="back-button">← Back</a>
       <div class="logo">
         <img src="./img/Artispo_logo_long.png" alt="Artispo Logo">
       </div>
