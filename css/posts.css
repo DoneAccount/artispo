@@ -68,6 +68,7 @@
         font-size: 14px;
         line-height: 1.5;
         display: -webkit-box;
+        line-clamp: 2;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
@@ -119,69 +120,214 @@
         color: #fff;
     }
     
-    /* Modal Styles */
+        /* Modal Styles */
     .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(5px);
-    }
-    
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Left side - Image */
+.modal-image {
+    flex: 2;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* THIS IS THE KEY FIX FOR MODAL IMAGES */
+.modal-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Keeps entire image visible without cropping */
+}
+
+/* Right side - Details */
+.modal-details {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background-color: #f6e7d0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Mobile Modal */
+@media (max-width: 768px) {
     .modal-content {
-        margin: 5% auto;
-        display: flex;
-        max-width: 1000px;
+        flex-direction: column;
+        height: 90vh;
         width: 95%;
-        background-color: #fff;
-        border-radius: 12px;
-        overflow: hidden;
-        animation: modalSlide 0.3s ease;
-    }
-    
-    @keyframes modalSlide {
-        from {
-            opacity: 0;
-            transform: translateY(-50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
     
     .modal-image {
-        flex: 1.5;
-        background-color: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 500px;
-    }
-    
-    .modal-image img {
-        max-width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
+        flex: 1;
+        min-height: 40%;
     }
     
     .modal-details {
         flex: 1;
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        background-color: #fffbf5;
+        width: 100%;
+        max-width: 100%;
     }
-    
-    .modal-close {
+}
+
+    /* User Info Section */
+    .modal-user {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .modal-user .profile-img-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #e27b2d;
+        margin-right: 12px;
+    }
+
+    .modal-user .profile-img-small img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-user-info h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .modal-user-info span {
+        font-size: 12px;
+        color: #555;
+    }
+
+    /* Caption Section */
+    .modal-caption {
+        padding: 20px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .modal-caption p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+    }
+
+    .modal-caption .hashtag {
+        color: #e27b2d;
+        font-weight: 600;
+    }
+
+    /* Meta (Date) */
+    .modal-meta {
+        padding: 0 20px 15px 20px;
+        font-size: 12px;
+        color: #666;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Actions (Like, Share) */
+    .modal-actions {
+        display: flex;
+        gap: 15px;
+        padding: 15px 20px;
+        background-color: #f6e7d0;
+    }
+
+    .modal-actions button {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #e27b2d;
+        background-color: transparent;
+        color: #e27b2d;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .modal-actions button:hover {
+        background-color: #e27b2d;
+        color: #fff;
+    }
+
+
+/* Close Button inside the Post/Sidebar */
+   .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.2s;
+}
+
+    .modal-close:hover {
+        background: rgba(255, 255, 255, 0.9); /* Whiter on hover */
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 1000px) {
+        .modal-content {
+            flex-direction: column;
+            height: 100vh;
+            max-width: 100%;
+        }
+
+        .modal-image {
+            flex: 1;
+            width: 100%;
+            min-height: 40vh;
+        }
+
+        .modal-details {
+            width: 100%;
+            flex: 1.5;
+            border-left: none;
+            border-top: 4px solid #e27b2d;
+        }
+    }
+  .modal-close {
         position: absolute;
         top: 20px;
         right: 30px;
-        color: #fff;
+        color: #000;
         font-size: 35px;
         font-weight: bold;
         cursor: pointer;
@@ -193,101 +339,19 @@
         color: #e27b2d;
     }
     
-    .modal-user {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .modal-user .profile-img-small {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 15px;
-        overflow: hidden;
-        border: 2px solid #e27b2d;
-    }
-    
-    .modal-user .profile-img-small img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .modal-user-info h3 {
-        margin: 0;
-        font-size: 18px;
-        color: #333;
-    }
-    
-    .modal-user-info span {
-        font-size: 13px;
-        color: #888;
-    }
-    
-    .modal-caption {
-        flex: 1;
-        overflow-y: auto;
-    }
-    
-    .modal-caption p {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #444;
-    }
-    
-    .modal-caption .hashtag {
-        color: #e27b2d;
-        font-weight: 500;
-    }
-    
-    .modal-meta {
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
-        color: #888;
-        font-size: 14px;
-    }
-    
-    .modal-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-    }
-    
-    .modal-actions button {
-        flex: 1;
-        padding: 12px;
-        border: 2px solid #e27b2d;
-        background-color: transparent;
-        color: #e27b2d;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-    
-    .modal-actions button:hover {
-        background-color: #e27b2d;
-        color: #fff;
-    }
-    
+
+    /* Mobile Responsive */
     @media (max-width: 768px) {
         .modal-content {
             flex-direction: column;
-            margin: 10% auto;
-            width: 95%;
+            margin: 0;
+            width: 100%;
+            height: 100vh;
         }
         
         .modal-image {
             max-height: 50vh;
+            width: 100%;
         }
         
         .horizontal-post-card {
@@ -300,57 +364,77 @@
     }
 
 
+
+/* Instagram Grid Layout */
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 5px; /* Space between images */
+    max-width: 600px; /* Limit the width of the whole grid */
+    margin: 0 auto; /* Center the grid */
+}
+
+.post-card {
+    position: relative;
+    width: 100%;
+    /* FORCES THE BOX TO BE A SMALL SQUARE */
+    aspect-ratio: 1 / 1; 
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #ddd; /* Gray background while loading */
+}
+
+.post-card img {
+    width: 100%;
+    height: 100%;
+    /* THIS MAKES THE IMAGE FILL THE BOX PERFECTLY */
+    object-fit: cover; 
+    display: block;
+}
+
+/* Delete button positioning */
+
 .delete-form {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    opacity: 0; /* Hide delete button normally */
+    transition: opacity 0.3s;
+}
+
+.post-card:hover .delete-form {
+    opacity: 1; /* Show delete button on hover */
 }
 
 .delete-btn {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.6);
     border: none;
+    color: white;
+    padding: 6px 8px;
     border-radius: 50%;
-    width: 40px; 
-    height: 40px; 
     cursor: pointer;
-    color: #e74c3c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    font-size: 16px; 
+    font-size: 12px;
 }
 
 .delete-btn:hover {
-    background: #e74c3c;
-    color: white;
-    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+    background: rgba(255, 0, 0, 0.8);
 }
 
-.delete-form {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 100;
+@media (max-width: 900px) {
+    .posts-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+    }
 }
 
-.delete-btn {
-    background: rgba(255, 255, 255, 0.95);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    color: #e74c3c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    font-size: 22px;
-}
-
-.delete-btn:hover {
-    background: #c0392b;
-    color: white;
+@media (max-width: 500px) {
+    .posts-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on phone */
+        gap: 3px;
+    }
+    
+    .posts-grid {
+        max-width: 100%; /* Full width on phone */
+    }
 }

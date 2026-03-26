@@ -67,9 +67,9 @@
             // Create a new account in the database
             sqlRequest(
                 $connection,
-                "INSERT INTO users(username, email, user_password)
-                VALUES (?, ?, ?)",
-                [$username, $email, $user_password],
+                "INSERT INTO users(user_id, username, email, password)
+                VALUES (?, ?, ?, ?)",
+                [uuidv4(), $username, $email, $user_password],
                 "<p class='account-made'> Your account has been successfully made! </p>"
             );
             
@@ -78,6 +78,39 @@
         }
 
         return;
+    }
+
+    function login_page($connection, $username, $user_password) {
+        try {
+            // Initialize empty array
+            $returned_array = [];
+
+            // Find matching hash and username in database
+            $returned_array = sqlRequest(
+                $connection,
+                "SELECT * FROM users WHERE username = ?",
+                [$username]
+            );
+
+            // Check the user
+            if (!empty($returned_array)) {
+                $user = $returned_array[0];
+
+                if (password_verify($user_password, $user["password"])) {
+                    // Store user identity for features that need user_id_fk (e.g., uploads to posts table)
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['user_id'] = (int)$user['_id'];
+                    login();
+                    header("Location: home.php");
+                    exit();
+                }
+            }
+            
+            return "<p class='invalid-user-or-pass'>Invalid username or password entered!</p>";
+
+        } catch (\PDOException $th) {
+            die("Connection failed: " . $th->getmessage());
+        }
     }
 
 ?>

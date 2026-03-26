@@ -1,6 +1,13 @@
 <?php
 date_default_timezone_set("Asia/Manila");
 
+// Uploads should create DB rows in `posts` (not only write to uploads/log.txt)
+require_once './includes/sessions.php';
+require_once './includes/db_startup.php';
+require_login();
+
+$connection = make_db_connection("localhost", "artispo", "root", "");
+
 // Initialize variables
 $error = null;
 $success = null;
@@ -28,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!in_array($fileType, $allowedTypes)) {
             $error = "Error: Only PNG and JPG/JPEG files are allowed.";
         }
+
         //File size validation
         elseif ($fileSize > $maxSize) {
             $error = "Error: File size must be less than 5MB.";
@@ -50,20 +58,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Record upload datetime
                 $upload_time = date("F d, Y - h:i A");
                 
-                // Save to log file
-                $logEntry = json_encode([
-                    'filename' => $newFileName,
-                    'datetime' => $upload_time,
-                    'caption' => $caption,
-                    'hashtags' => $hashtags
-                ]);
-                file_put_contents('uploads/log.txt', $logEntry . PHP_EOL, FILE_APPEND);
-                
-                // Set success message and preview data
+            // Save post in MySQL (users uploads are tied to users._id via posts.user_id_fk)
+            $dbInserted = false;
+            try {
+                $defaultCategoryName = 'Uncategorized';
+
+                // Ensure the "Uncategorized" category exists (posts.category_id_fk is NOT NULL)
+                $stmt = $connection->prepare("SELECT _id FROM categories WHERE category_name = ? LIMIT 1");
+                $stmt->execute([$defaultCategoryName]);
+                $categoryRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$categoryRow) {
+                    $categoryId = uuidv4();
+                    $stmt = $connection->prepare("INSERT INTO categories(category_id, category_name) VALUES (?, ?)");
+                    $stmt->execute([$categoryId, $defaultCategoryName]);
+
+                    $stmt = $connection->prepare("SELECT _id FROM categories WHERE category_name = ? LIMIT 1");
+                    $stmt->execute([$defaultCategoryName]);
+                    $categoryRow = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
+
+                $categoryIdFk = (int)($categoryRow['_id'] ?? 0);
+                $userIdFk = (int)($_SESSION['user_id'] ?? 0);
+
+                if ($categoryIdFk <= 0) {
+                    throw new Exception("Default category could not be created.");
+                }
+                if ($userIdFk <= 0) {
+                    throw new Exception("Missing logged-in user_id. Please log in again.");
+                }
+
+                // `posts.title` is UNIQUE in your schema, so generate a unique title every time.
+                $baseTitle = 'Post_' . pathinfo($newFileName, PATHINFO_FILENAME) . '_' . time();
+                $title = mb_substr($baseTitle, 0, 120);
+
+                $postId = uuidv4();
+                $stmt = $connection->prepare(
+                    "INSERT INTO posts(post_id, user_id_fk, category_id_fk, title, image, description) VALUES (?, ?, ?, ?, ?, ?)"
+                );
+                $stmt->execute([$postId, $userIdFk, $categoryIdFk, $title, $newFileName, $caption]);
+
+                $dbInserted = true;
+            } catch (Exception $e) {
+                $error = "Error saving post to database: " . $e->getMessage();
+                // Avoid orphan files if DB insert fails
+                if (isset($uploadPath) && file_exists($uploadPath)) {
+                    unlink($uploadPath);
+                }
+            }
+
+            // Set success message and preview data only if DB insert succeeded
+            if ($dbInserted) {
                 $success = "Successfully uploaded!";
                 $uploadedImage = 'uploads/' . $newFileName;
                 $uploadedDatetime = $upload_time;
                 $uploadedCaption = $caption;
+            }
             } else {
                 $error = "Error: Failed to upload the file. Check folder permissions or server settings.";
             }
@@ -94,35 +144,26 @@ $currentDateTime = date('Y-m-d H:i:s');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image - Artispo</title>
-    <link rel="stylesheet" href="./css/profile.css">
     <link rel="stylesheet" href="./css/upload.css">
+    <link rel="stylesheet" href="./css/profile.css">
 </head>
 
 <body>
     <header class="top-nav">
         <div class="nav-content">
         <div class="logo">
-                <img src="./img/Artispo Logo(1).png" alt="Artispo Logo">
+            <img src="./img/Artispo_logo_long.png" alt="Artispo Logo">
             </div>
-            <nav>
-                <ul>
-                    <li><a href="home.php">Home</a></li>
-                    <li><a href="explore.php">Explore</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="contact.php">Contact</a></li>
-                    <li><a href="profile.php">Profile</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
     <aside class="sidebar">
-        <div class="icon"><img src="./img/Compass.png" alt="Compass"></div>
+        <a href="explore.php" class="icon"><img src="./img/Compass.png" alt="Compass"></a>
         <div class="icon"><img src="./img/Gallery.png" alt="Gallery"></div>
         <div class="icon"><img src="./img/Videos.png" alt="Videos"></div>
         <div class="icon"><img src="./img/paint-brush-icon.png" alt="Art"></div>
-        <div class="icon"><img src="./img/Home.png" alt="Home"></div>
-        <div class="icon"><img src="./img/Settings.png" alt="Settings"></div>
+        <a href="home.php" class="icon"><img src="./img/Home.png" alt="Home"></a>
+        <a href="settings.php" class="icon"><img src="./img/Settings.png" alt="Settings"></a>
     </aside>
 
     <main class="profile-content">
@@ -219,17 +260,17 @@ $currentDateTime = date('Y-m-d H:i:s');
             <div class="footer-section links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Explore</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="explore.php">Explore</a></li>
                     <ul class="sub-links">
                         <li><a href="#">Categories</a></li>
-                        <li><a href="#">Mix Mode</a></li>
+                        <li><a href="explore.php">Mix Mode</a></li>
                     </ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="profile.php">Profile</a></li>
                     <ul class="sub-links">
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="settings.php">Settings</a></li>
                     </ul>
                 </ul>
             </div>

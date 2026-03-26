@@ -1,107 +1,3 @@
-<?php
-date_default_timezone_set("Asia/Manila");
-
-// Load posts from MySQL (uploads/log.txt is legacy)
-require_once './includes/sessions.php';
-require_once './includes/db_startup.php';
-
-$uploads = [];
-$currentDateTime = date('Y-m-d H:i:s');
-
-$userIdFk = (int)($_SESSION['user_id'] ?? 0);
-$limit = 5; // keep in sync with infinite scroll offset logic
-$limit = (int)$limit;
-
-if ($userIdFk > 0) {
-    $connection = make_db_connection("localhost", "artispo", "root", "");
-    $offset = 0;
-
-    $stmt = $connection->prepare(
-        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username, u.profile_picture
-         FROM posts p
-         INNER JOIN users u ON u._id = p.user_id_fk
-         WHERE user_id_fk = ?
-         ORDER BY p.date_posted DESC, p.post_id DESC
-         LIMIT ? OFFSET ?"
-    );
-    $stmt->bindValue(1, $userIdFk, PDO::PARAM_INT);
-    $stmt->bindValue(2, $limit, PDO::PARAM_INT);
-    $stmt->bindValue(3, $offset, PDO::PARAM_INT);
-    $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($rows as $row) {
-        $profilePic = !empty($row['profile_picture']) ? "uploads/profile_pics/" . $row['profile_picture'] : "./img/profile-placeholder.png";
-
-        $uploads[] = [
-            'post_id' => $row['post_id'],
-            'filename' => $row['image'],
-            'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),
-            'caption' => $row['description'] ?? '',
-            'username' => $row['username'],
-            'profile_pic' => $profilePic,
-            // Hashtags are rendered from caption text, but the UI expects this key sometimes.
-            'hashtags' => ''
-        ];
-    }
-}
-?>
-
-
-<!-- Posts Section with Horizontal Layout -->
-<section class="posts-section" style="padding: 20px; max-width: 1400px; margin: 0 auto;">
-    <div class="posts-header">
-        <h2>My Posts</h2>
-    </div>
-    
-    <?php if (empty($uploads)): ?>
-        <div class="no-posts-message">
-            <p>No posts yet. Click the + button to create your first post!</p>
-        </div>
-    <?php else: ?>
-        
-        <div class="posts-grid">
-                <?php foreach ($uploads as $index => $upload): ?>
-                    <div class="post-card" onclick="openModal(<?php echo $index; ?>)">
-                        <!--DELETE BUTTON-->
-                        <form method="POST" class="delete-form" onclick="event.stopPropagation()">
-                            <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($upload['post_id']); ?>">
-                            <button type="submit" name="delete_post" class="delete-btn" onclick="return confirm('Delete this post?');">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                        <img src="uploads/<?php echo htmlspecialchars($upload['filename']); ?>" alt="Post Image" onerror="this.src='https://via.placeholder.com/600x600?text=Image+Not+Found'">
-                        <div class="horizontal-post-card-info">
-                            <p class="horizontal-post-card-caption">
-                                <?php if (!empty($upload['hashtags'])): ?>
-                            <div class="post-hashtags">
-                                <?php 
-                                    $tags = explode(",", $upload['hashtags']);
-                                    foreach ($tags as $tag):
-                                ?>
-                                    <span class="hashtag">
-                                        <?php echo htmlspecialchars(trim($tag)); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                                <?php 
-                                $caption = $upload['caption'] ?? 'No caption';
-                                // Highlight hashtags
-                                $caption = preg_replace('/#(\w+)/', '<span class="hashtag">#$1</span>', htmlspecialchars($caption));
-                                echo $caption;
-                                ?>
-                            </p>
-                        </div>
-                    </div>
-
-                <?php endforeach; ?>
-
-        </div>
-
-    <?php endif; ?>
-
-</section>
 <!-- Modal Post Details -->
 <div id="postModal" class="modal">
     <div class="modal-content">
@@ -112,10 +8,10 @@ if ($userIdFk > 0) {
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <div class="modal-user">
                 <div class="profile-img-small">
-                    <img id="modalUserProfilePic" src="./img/profile-placeholder.png" alt="Profile">
+                    <img id="modalUserProfilePicExplore" src="./img/profile-placeholder.png" alt="Profile">
                 </div>
                 <div class="modal-user-info">
-                    <h3 id="modalUsername">Unknown User</h3>
+                    <h3 id="modalUsernameExplore">Unknown User</h3>
                     <span id="modalDateTime"></span>
                 </div>
             </div>
@@ -170,7 +66,7 @@ if ($userIdFk > 0) {
     });
 
     // Modal functions
-    function openModal(index) {
+    function openPostModal(index) {
         const post = postsData[index];
         if (!post) return;
 
@@ -179,8 +75,8 @@ if ($userIdFk > 0) {
         const modalDateTime = document.getElementById('modalDateTime');
         const modalDateTimeFull = document.getElementById('modalDateTimeFull');
         const modalCaption = document.getElementById('modalCaption');
-        const modalUsername = document.getElementById('modalUsername');
-        const modalUserProfilePic = document.getElementById('modalUserProfilePic');
+        const modalUsername = document.getElementById('modalUsernameExplore');
+        const modalUserProfilePic = document.getElementById('modalUserProfilePicExplore');
 
         modalImage.src = 'uploads/' + post.filename;
         modalDateTime.textContent = post.datetime;
@@ -355,18 +251,17 @@ if ($userIdFk > 0) {
         backdrop-filter: blur(5px);
     }
     
-    .modal-content {
-        margin: 5% auto;
-        display: flex;
-        max-width: 1000px;
-        width: 95%;
-        background-color: #f6e7d0;
-        border-radius: 12px;
-        overflow: hidden;
-        animation: modalSlide 0.3s ease;
-        position: relative;
-    }
-    
+   .modal-content {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background-color: #f6e7d0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin: 80px auto;
+}
     @keyframes modalSlide {
         from {
             opacity: 0;
@@ -379,7 +274,7 @@ if ($userIdFk > 0) {
     }
     
     .modal-image {
-        flex: 1.5;
+        flex: 2;
         background-color: #000;
         display: flex;
         align-items: center;
@@ -387,11 +282,13 @@ if ($userIdFk > 0) {
         min-height: 500px;
     }
     
-    .modal-image img {
-        max-width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
-    }
+.modal-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
     
     .modal-details {
         flex: 1;

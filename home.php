@@ -36,6 +36,7 @@
 </header>
 
 
+
     <!-- Hero Section -->
   <section class="hero">
         <h1 style="font-weight: 80px;">Artispo</h1>
@@ -139,17 +140,17 @@
       <div class="footer-section links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Explore</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="explore.php">Explore</a></li>
           <ul class="sub-links">
             <li><a href="#">Categories</a></li>
-            <li><a href="#">Mix Mode</a></li>
+            <li><a href="explore.php">Mix Mode</a></li>
           </ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Profile</a></li>
+          <li><a href="about.php">About Us</a></li>
+          <li><a href="contact.php">Contact</a></li>
+          <li><a href="profile.php">Profile</a></li>
           <ul class="sub-links">
-            <li><a href="#">Settings</a></li>
+            <li><a href="settings.php">Settings</a></li>
           </ul>
         </ul>
       </div>

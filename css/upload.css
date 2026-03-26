@@ -238,3 +238,9 @@
 .upload-container button {
     margin-top: 20px;
 }
+
+.top-nav .nav-content {
+    display: flex;
+    align-items: center;
+    padding: 40px 50px; /* Adjust top/bottom padding to reduce empty space */
+}

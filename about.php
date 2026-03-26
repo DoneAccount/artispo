@@ -16,14 +16,6 @@
       </a>
       <span class="logo-text">Artispo</span>
     </div>
-
-    <nav>
-      <a href="home.php" class="nav-item home">Home</a>
-      <a href="explore.php" class="nav-item explore">Explore</a>
-      <a href="about.php" class="nav-item about active">About Us</a>
-      <a href="contact.php" class="nav-item contact">Contact</a>
-      <a href="profile.php" class="nav-item profile">Profile</a>
-    </nav>
   </header>
 
   <section class="about-section">
@@ -177,15 +169,15 @@
     <a href="explore.php">Explore</a>
     <ul class="sub-links">
       <li><a href="#">Categories</a></li>
-      <li><a href="#">Mix Mode</a></li>
+      <li><a href="explore.php">Mix Mode</a></li>
     </ul>
   </li>
-  <li><a href="#">About Us</a></li>
-  <li><a href="#">Contact</a></li>
+  <li><a href="about.php">About Us</a></li>
+  <li><a href="contact.php">Contact</a></li>
   <li>
-    <a href="#">Profile</a>
+    <a href="profile.php">Profile</a>
     <ul class="sub-links">
-      <li><a href="#">Settings</a></li>
+          <li><a href="settings.php">Settings</a></li>
     </ul>
   </li>
 </ul>

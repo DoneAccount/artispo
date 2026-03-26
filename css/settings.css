@@ -1,0 +1,226 @@
+/* Username Info */
+.username-info {
+  color: #ddd;
+  margin-bottom: 35px;
+}
+
+/* Settings Container */
+.settings-container {
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Settings Coming Soon Message */
+.settings-coming-soon {
+  color: #f6e7d0;
+  margin-bottom: 18px;
+}
+
+/* Settings List */
+.settings-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Settings Item */
+.settings-item {
+  background: #2f2f39;
+  padding: 14px 16px;
+  border-radius: 10px;
+}
+
+/* Settings Item Description */
+.settings-item-description {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+/* Profile Settings Section */
+.profile-settings-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #444;
+}
+
+/* Profile Picture Container */
+.profile-pic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-pic-label {
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.profile-pic-label:hover {
+  transform: scale(1.05);
+}
+
+.profile-pic-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #555;
+}
+
+.profile-pic-input {
+  display: none;
+}
+
+.profile-pic-hint {
+  color: #aaa;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Bio Settings Section */
+.bio-settings-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #444;
+}
+
+.bio-label {
+  color: #f6e7d0;
+  font-size: 0.95rem;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+/* Bio Display */
+.bio-display {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bio-text {
+  color: #ddd;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 10px;
+  background: #1f1f26;
+  border-radius: 6px;
+}
+
+.no-bio {
+  color: #aaa;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0;
+  padding: 10px;
+  background: #1f1f26;
+  border-radius: 6px;
+}
+
+.edit-bio-btn {
+  padding: 6px 12px;
+  background-color: #667bc6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: fit-content;
+}
+
+.edit-bio-btn:hover {
+  background-color: #5a6ab8;
+}
+
+/* Bio Edit Form */
+.bio-edit-form {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bio-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  background-color: #1f1f26;
+  color: #ddd;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.bio-textarea:focus {
+  outline: none;
+  border-color: #667bc6;
+  box-shadow: 0 0 0 2px rgba(102, 123, 198, 0.2);
+}
+
+.bio-form-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.bio-save-btn,
+.bio-cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.bio-save-btn {
+  background-color: #667bc6;
+  color: white;
+}
+
+.bio-save-btn:hover {
+  background-color: #5a6ab8;
+}
+
+.bio-cancel-btn {
+  background-color: #555;
+  color: #ddd;
+}
+
+.bio-cancel-btn:hover {
+  background-color: #666;
+}
+
+/* Logout Form and Button Styles */
+.logout-form {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ff3838;
+}
