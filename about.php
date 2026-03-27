@@ -9,13 +9,21 @@
   <link rel="stylesheet" href="./css/about.css">
 </head>
 <body>
-  <header class="top-nav">
+    <header class="top-nav">
     <div class="logo-container">
       <a href="index.php">
         <img src="./img/Artispo_logo.png" alt="Artispo Logo" class="logo">
       </a>
       <span class="logo-text">Artispo</span>
     </div>
+
+    <nav>
+      <a href="home.php" class="nav-item home">Home</a>
+      <a href="explore.php" class="nav-item explore">Explore</a>
+      <a href="about.php" class="nav-item about active">About Us</a>
+      <a href="contact.php" class="nav-item contact">Contact</a>
+      <a href="profile.php" class="nav-item profile">Profile</a>
+    </nav>
   </header>
 
   <section class="about-section">

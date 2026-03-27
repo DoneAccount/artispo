@@ -20,7 +20,7 @@ header {
   justify-content: space-between;
   padding: 0 120px;
   box-sizing: border-box;
-  border-bottom: 2px solid #343640; /* optional thin border */
+  border-bottom: 2px solid #343640; 
 }
 
 .logo-container {
@@ -78,26 +78,23 @@ header {
   text-decoration: underline;
 }
 
-/* NAVBAR CONTAINER */
 .top-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #fdeedc; /* same as your screenshot */
-  padding: 12px 80px; /* space from edges */
+  background-color: #f6e5cc; 
+  padding: 12px 80px; 
 }
 
-/* LOGO AND TEXT */
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* space between logo and text */
+  gap: 10px; 
 }
 
-/* NAVIGATION LINKS */
 nav {
   display: flex;
-  gap: 60px; /* adjust this value to control link spacing */
+  gap: 60px; 
 }
 
 .nav-item {
@@ -108,7 +105,6 @@ nav {
   font-weight: 500;
 }
 
-/* ACTIVE LINK (underline) */
 .nav-item.active {
   text-decoration: underline;
   text-underline-offset: 4px;
