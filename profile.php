@@ -6,8 +6,23 @@ error_reporting(E_ALL);
 require_once './includes/db_startup.php';
 
 $connection = make_db_connection("localhost", "artispo", "root", "");
-
 $username = $_SESSION['username'] ?? 'Guest'; // use session username
+$userIdFk = (int)($_SESSION['user_id'] ?? 0);
+
+// Handle Comment Submission (Moved from includes/posts.php to prevent header issues)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment']) && $userIdFk > 0) {
+    $postId = (int)$_POST['comment_post_db_id'];
+    $content = sanitizeInput($_POST['comment_content'] ?? '');
+    if (!empty($content)) {
+        sqlRequest($connection, 
+            "INSERT INTO comments (comment_id, user_id_fk, post_id_fk, comment_content) VALUES (?, ?, ?, ?)",
+            [uuidv4(), $userIdFk, $postId, $content]
+        );
+    }
+    // Refresh to clear POST and show new comment
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit;
+}
 
 if (isset($_FILES['new_profile_pic']) && $_FILES['new_profile_pic']['error'] === UPLOAD_ERR_OK) {
 

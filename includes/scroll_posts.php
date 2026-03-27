@@ -29,7 +29,7 @@ if ($userIdFk > 0) {
 
     // Page slice
     $stmt = $connection->prepare(
-        "SELECT p.post_id, p.image, p.date_posted, p.description, u.username
+        "SELECT p._id, p.post_id, p.image, p.date_posted, p.description, u.username
          FROM posts p
          INNER JOIN users u ON u._id = p.user_id_fk
          WHERE user_id_fk = ?
@@ -42,8 +42,24 @@ if ($userIdFk > 0) {
     $stmt->execute();
     $currentPosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $commentStmt = $connection->prepare("
+        SELECT c.comment_content, c.date_posted, u.username, u.profile_picture 
+        FROM comments c 
+        JOIN users u ON c.user_id_fk = u._id 
+        WHERE c.post_id_fk = ? 
+        ORDER BY c.date_posted ASC
+    ");
+
     foreach ($currentPosts as $index => $post) {
+        $commentStmt->execute([$post['_id']]);
+        $comments = $commentStmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($comments as &$c) {
+            $c['profile_picture'] = !empty($c['profile_picture']) ? "uploads/profile_pics/" . $c['profile_picture'] : "./img/profile-placeholder.png";
+            $c['date_posted'] = date("M d, Y", strtotime($c['date_posted']));
+        }
+
         // Prepare values used by both HTML and modal JS
+        $dbId = $post['_id'];
         $postId = $post['post_id'];
         $filename = $post['image'];
         $datetime = date("F d, Y - h:i A", strtotime($post['date_posted']));
@@ -76,11 +92,13 @@ if ($userIdFk > 0) {
 
         // --- HIDDEN DATA FOR MODAL ---
         $dataHtml .= '<div class="post-data" ';
+        $dataHtml .= 'data-db-id="' . htmlspecialchars($dbId) . '" ';
         $dataHtml .= 'data-filename="' . htmlspecialchars($filename) . '" ';
         $dataHtml .= 'data-datetime="' . htmlspecialchars($datetime) . '" ';
         $dataHtml .= 'data-caption="' . htmlspecialchars($caption) . '" ';
         $dataHtml .= 'data-username="' . htmlspecialchars($username) . '" ';
-        $dataHtml .= 'data-profile-pic="' . htmlspecialchars($profilePic) . '">';
+        $dataHtml .= 'data-profile-pic="' . htmlspecialchars($profilePic) . '" ';
+        $dataHtml .= 'data-comments=\'' . htmlspecialchars(json_encode($comments), ENT_QUOTES, 'UTF-8') . '\'>';
         $dataHtml .= '</div>';
     }
 }

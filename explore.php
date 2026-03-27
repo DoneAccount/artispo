@@ -1,12 +1,30 @@
 <?php
 /* ---------------- ADDED: LOAD POSTS FROM MySQL FOR EXPLORE PAGE ---------------- */
+require_once './includes/sessions.php';
 require_once './includes/db_startup.php';
 
 $uploads = [];
 $connection = make_db_connection("localhost", "artispo", "root", "");
 
+// Handle Comment Submission in Explore (Moved from includes/posts_explore.php to prevent header issues)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment_explore'])) {
+    $postId = (int)$_POST['comment_post_db_id'];
+    $content = sanitizeInput($_POST['comment_content'] ?? '');
+    $userId = (int)($_SESSION['user_id'] ?? 0);
+
+    if (!empty($content) && $userId > 0) {
+        sqlRequest($connection, 
+            "INSERT INTO comments (comment_id, user_id_fk, post_id_fk, comment_content) VALUES (?, ?, ?, ?)",
+            [uuidv4(), $userId, $postId, $content]
+        );
+    }
+    // Refresh the page to clear the POST data and display the new comment
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit;
+}
+
 $stmt = $connection->prepare(
-    "SELECT p.post_id, p.image, p.date_posted, p.description, u.username, u.profile_picture
+    "SELECT p._id, p.post_id, p.image, p.date_posted, p.description, u.username, u.profile_picture
      FROM posts p
      INNER JOIN users u ON u._id = p.user_id_fk
      ORDER BY p.date_posted DESC, p.post_id DESC"
@@ -18,6 +36,7 @@ foreach ($rows as $row) {
     $profilePic = !empty($row['profile_picture']) ? "uploads/profile_pics/" . $row['profile_picture'] : "./img/profile-placeholder.png";
 
     $uploads[] = [
+        'db_id' => $row['_id'],
         'post_id' => $row['post_id'],
         'filename' => $row['image'],
         'datetime' => date("F d, Y - h:i A", strtotime($row['date_posted'])),

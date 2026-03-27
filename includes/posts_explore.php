@@ -1,3 +1,32 @@
+<?php
+// Fetch comments for explore posts
+$commentStmtExplore = $connection->prepare("
+    SELECT c.comment_content, c.date_posted, u.username, u.profile_picture 
+    FROM comments c 
+    JOIN users u ON c.user_id_fk = u._id 
+    WHERE c.post_id_fk = ? 
+    ORDER BY c.date_posted ASC
+");
+
+foreach ($uploads as &$upload) {
+    $commentStmtExplore->execute([$upload['db_id']]);
+    $upload['comments'] = $commentStmtExplore->fetchAll(PDO::FETCH_ASSOC);
+    foreach($upload['comments'] as &$c) {
+        $c['profile_picture'] = !empty($c['profile_picture']) ? "uploads/profile_pics/" . $c['profile_picture'] : "./img/profile-placeholder.png";
+        $c['date_posted'] = date("M d, Y", strtotime($c['date_posted']));
+    }
+}
+
+// Current user's profile pic for the comment box
+$currentUserId = (int)($_SESSION['user_id'] ?? 0);
+$currentUserPic = "./img/profile-placeholder.png";
+if ($currentUserId > 0) {
+    $stmtU = $connection->prepare("SELECT profile_picture FROM users WHERE _id = ?");
+    $stmtU->execute([$currentUserId]);
+    $u = $stmtU->fetch();
+    if (!empty($u['profile_picture'])) $currentUserPic = "uploads/profile_pics/" . $u['profile_picture'];
+}
+?>
 <!-- Modal Post Details -->
 <div id="postModal" class="modal">
     <div class="modal-content">
@@ -20,12 +49,25 @@
                 <p id="modalCaption"></p>
             </div>
             
+            <div class="modal-comments">
+                <h4>Comments</h4>
+                <div id="commentsListExplore" class="comments-list"></div>
+                <form method="POST" class="comment-form">
+                    <input type="hidden" name="comment_post_db_id" id="modalPostDbIdExplore">
+                    <div class="comment-input-group">
+                        <img src="<?php echo $currentUserPic; ?>" alt="My Profile" class="comment-user-img">
+                        <input type="text" name="comment_content" placeholder="Add a comment..." required>
+                        <button type="submit" name="submit_comment_explore"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </form>
+            </div>
+
             <div class="modal-meta">
                 <p><i class="far fa-clock" style="margin-right: 8px;"></i>Posted on: <span id="modalDateTimeFull"></span></p>
             </div>
             
             <div class="modal-actions">
-                <button onclick="likePost()">
+                <button type="button">
                     <i class="far fa-heart"></i> Like
                 </button>
                 <button onclick="sharePost()">
@@ -40,11 +82,13 @@
 <div id="postsData" style="display: none;">
     <?php foreach ($uploads as $upload): ?>
         <div class="post-data" 
+             data-db-id="<?php echo htmlspecialchars($upload['db_id'] ?? ''); ?>"
              data-filename="<?php echo htmlspecialchars($upload['filename']); ?>"
              data-datetime="<?php echo htmlspecialchars($upload['datetime']); ?>"
              data-caption="<?php echo htmlspecialchars($upload['caption'] ?? ''); ?>"
              data-username="<?php echo htmlspecialchars($upload['username'] ?? 'Unknown User'); ?>"
              data-profile-pic="<?php echo htmlspecialchars($upload['profile_pic'] ?? './img/profile-placeholder.png'); ?>"
+             data-comments='<?php echo htmlspecialchars(json_encode($upload['comments'] ?? []), ENT_QUOTES, 'UTF-8'); ?>'
              data-hashtags="<?php echo htmlspecialchars($upload['hashtags'] ?? ''); ?>">
         </div>
     <?php endforeach; ?>
@@ -56,11 +100,13 @@
     const postsData = [];
     document.querySelectorAll('.post-data').forEach(post => {
         postsData.push({
+            dbId: post.dataset.dbId,
             filename: post.dataset.filename,
             datetime: post.dataset.datetime,
             caption: post.dataset.caption,
             username: post.dataset.username,
             profilePic: post.dataset.profilePic,
+            comments: JSON.parse(post.dataset.comments || '[]'),
             hashtags: post.dataset.hashtags
         });
     });
@@ -78,11 +124,13 @@
         const modalUsername = document.getElementById('modalUsernameExplore');
         const modalUserProfilePic = document.getElementById('modalUserProfilePicExplore');
 
+        document.getElementById('modalPostDbIdExplore').value = post.dbId;
         modalImage.src = 'uploads/' + post.filename;
         modalDateTime.textContent = post.datetime;
         modalDateTimeFull.textContent = post.datetime;
         modalUsername.textContent = post.username || 'Unknown User';
         modalUserProfilePic.src = post.profilePic || './img/profile-placeholder.png';
+        renderComments(post.comments);
         
         let captionText = post.caption || '<i>No caption</i>';
         captionText = captionText.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
@@ -90,6 +138,22 @@
 
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
+    }
+
+    function renderComments(comments) {
+        const list = document.getElementById('commentsListExplore');
+        list.innerHTML = '';
+        if (comments.length === 0) {
+            list.innerHTML = '<p class="no-comments">No comments yet.</p>';
+            return;
+        }
+        comments.forEach(c => {
+            list.innerHTML += `
+                <div class="comment-item">
+                    <img src="${c.profile_picture}" alt="${c.username}">
+                    <div class="comment-text"><strong>${c.username}</strong> ${c.comment_content}<br><small>${c.date_posted}</small></div>
+                </div>`;
+        });
     }
 
     function closeModal() {
@@ -116,6 +180,38 @@
     });
 </script>
 <style>
+    /* Comments Section */
+    .modal-comments { margin-top: 15px; flex: 1; display: flex; flex-direction: column; min-height: 150px; }
+    .modal-comments h4 { margin: 0 0 10px 0; color: #e27b2d; border-bottom: 1px solid #e27b2d; padding-bottom: 5px; }
+    .comments-list { flex: 1; overflow-y: auto; max-height: 250px; margin-bottom: 10px; }
+    .comment-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 14px; }
+    .comment-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #e27b2d; }
+    .comment-text { background: #fff; padding: 8px 12px; border-radius: 12px; flex: 1; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .comment-text small { color: #888; font-size: 11px; }
+    .no-comments { color: #888; font-style: italic; font-size: 13px; text-align: center; margin-top: 10px; }
+    .comment-form { margin-top: auto; border-top: 1px solid #eee; padding-top: 10px; }
+    .comment-input-group { display: flex; align-items: center; gap: 10px; }
+    .comment-user-img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+    .comment-input-group input { 
+        flex: 1; 
+        padding: 10px 15px; 
+        border: 1px solid #ddd; 
+        border-radius: 20px; 
+        outline: none; 
+        font-size: 14px;
+    }
+    .comment-input-group input:focus { border-color: #e27b2d; }
+    .comment-input-group button { 
+        background: none; 
+        border: none; 
+        color: #e27b2d; 
+        cursor: pointer; 
+        font-size: 18px; 
+        padding: 5px;
+        transition: transform 0.2s;
+    }
+    .comment-input-group button:hover { transform: scale(1.1); }
+
     /* Horizontal Posts Container */
     .horizontal-posts-container {
         width: 100%;
